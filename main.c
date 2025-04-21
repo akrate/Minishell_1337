@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/21 16:09:04 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:10:10 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int cheking_doubleqoutes(char *str)
 int main()
 {
     char *cmd;
-
+	// char *pwd = getcwd(NULL,0); ktjib path li kyn fiha;
+	// printf("%s\n",pwd);
     while (1)
     {
         cmd = readline("<minishell> ");
