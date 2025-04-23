@@ -6,15 +6,15 @@
 #    By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 14:41:13 by nafarid           #+#    #+#              #
-#    Updated: 2025/04/21 15:15:38 by aoussama         ###   ########.fr        #
+#    Updated: 2025/04/22 18:25:26 by aoussama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-SRC = main.c
+SRC = main.c utils.c pars.c
 OBJS = $(SRC:.c=.o)
 CC = cc
-CFLAGS = -Wall -Werror -Wextra 
+CFLAGS = -Wall -Werror -Wextra -g3
 FLAGS = -lreadline
 
 all: $(NAME)
