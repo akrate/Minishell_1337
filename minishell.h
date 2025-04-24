@@ -32,12 +32,14 @@ typedef struct s_cmd
 typedef struct s_list
 {
     char *content;
+    t_token_type type;
     struct s_list *next;
 } t_list;
 
 void paring_cmd(char *cmd);
 
 t_list *fill_node(char *str, int start, int finish);
+// char *lexe_token(char *str,int len,int start);
 //////////list////
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_list **lst, t_list *new);
