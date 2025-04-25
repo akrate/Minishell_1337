@@ -268,3 +268,87 @@ t_list *split_cmd(char *str)
     }
     return head;
 }
+
+
+
+////////////////////////////////
+
+int cheking_doubleqoutes(char *str)
+{
+    int single_quote = 0;  // Flag للاقتباس المفرد '
+    int double_quote = 0;  // Flag للاقتباس المزدوج "
+    int i = 0;
+
+    while (str[i])
+    {
+        if (str[i] == '\'' && (i == 0 || str[i-1] != '\\'))  // إذا كان ' وما قبلهش 
+            single_quote = !single_quote;  // غير الحالة (فتح/غلق)
+        else if (str[i] == '"' && (i == 0 || str[i-1] != '\\'))  // إذا كان " وما قبلهش 
+            double_quote = !double_quote;  // غير الحالة (فتح/غلق)
+        i++;
+    }
+    return (single_quote || double_quote);  // يرجع 1 إذا كان في quote مفتوح
+}
+char *fill_node(char *str, int start, int finish)
+{
+    if (start < 0 || finish < start || !str)  // تحقق من الحدود
+        return NULL;
+
+    char *cmd = malloc(finish - start + 2);  // +2 بسبب الـ null terminator
+    if (!cmd)
+        return NULL;
+
+    int i = 0;
+    while (start <= finish && str[start])
+        cmd[i++] = str[start++];
+    cmd[i] = '\0';
+
+    if (cheking_doubleqoutes(cmd))  // إذا كان في quotes مفتوحة
+    {
+        free(cmd);  // نظف الذاكرة أولاً
+        return NULL;
+    }
+    return cmd;
+}
+t_list *split_cmd(char *str)
+{
+    if (!str) return NULL;
+
+    t_list *head = NULL;
+    int i = 0;
+    int len = strlen(str);
+
+    while (i < len)
+    {
+        while (i < len && str[i] == ' ') i++;  // تجاوز المسافات
+
+        if (i >= len) break;
+
+        int j = i;
+        char quote = 0;
+
+        if (str[i] == '\'' || str[i] == '"')
+            quote = str[i++];  // افتح quote
+
+        while (i < len)
+        {
+            if (quote && str[i] == quote && (i == 0 || str[i-1] != '\\'))  // إذا كان quote مغلق
+            {
+                quote = 0;
+                i++;
+            }
+            else if (!quote && (str[i] == ' ' || str[i] == '\'' || str[i] == '"'))
+                break;
+            i++;
+        }
+
+        char *node_str = fill_node(str, j, i - 1);
+        if (!node_str)
+        {
+            ft_lstclear(&head, free);  // نظف القائمة إذا كان في خطأ
+            return NULL;
+        }
+        ft_lstadd_back(&head, ft_lstnew(node_str));
+    }
+    return head;
+}
