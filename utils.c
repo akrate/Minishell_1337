@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:23:13 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/25 18:01:05 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:36:54 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,25 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	}
 }
 
+char	*ft_strdup(const char *s)
+{
+	size_t	len;
+	size_t	i;
+	char	*copy;
 
+	len = ft_strlen(s);
+	i = 0;
+	copy = (char *)malloc(len + 1);
+	if (copy == NULL)
+		return (NULL);
+	while (s[i] != '\0')
+	{
+		copy[i] = s[i];
+		i++;
+	}
+	copy[i] = '\0';
+	return (copy);
+}
 t_list	*ft_lstlast(t_list *lst)
 {
 	if (lst == NULL)
@@ -54,29 +72,25 @@ t_list	*ft_lstnew(void *content)
 	node->next = NULL;
 	return (node);
 }
-void del_content(void *content)
-{
-    free(content);  // هنا كاينفترض أن المحتوى هو string (malloc)
-}
-void ft_lstclear(t_list **lst, void (*del)(void *))
-{
-    t_list *current;  // العنصر الحالي لي كاينحذف
-    t_list *next;     // العنصر لي جاي بعديه (نحتفظو بيها قبل الحذف)
 
-    if (!lst || !del)  // إذا اللستة فارغة ولا الدالة del ماكايناش
+void ft_lstclear(t_list **lst)
+{
+    t_list *current;
+    t_list *next;
+
+    if (!lst)
         return;
+    current = *lst;
 
-    current = *lst;  // نبداو من أول عنصر
-
-    while (current)  // كاينديرو حتى مايبقاش عنصر
+    while (current)
     {
-        next = current->next;  // نحفظو العنصر لي جاي قبل ما نحذفو الحالي
-        del(current->content); // نحرر المحتوى ديال العنصر الحالي
-        free(current);        // نحرر العنصر الحالي
-        current = next;       // ننتاقلو للعنصر لي جاي
+        next = current->next;
+        free(current->content);
+        free(current);
+        current = next;
     }
 
-    *lst = NULL;  // نحطو اللستة فارغة
+    *lst = NULL;
 }
 size_t	ft_strlen(const char *str)
 {

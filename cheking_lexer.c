@@ -6,13 +6,13 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:21:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/25 18:30:34 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:55:05 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_operator(char str)
+int is_meta(char str)
 {
     if (str == '<' || str == '>' || str == '|')
         return (1);
