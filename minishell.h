@@ -38,12 +38,12 @@ typedef struct s_list
 
 void paring_cmd(char *cmd);
 
-char *fill_node(char *str, int start, int finish);
+// char *fill_node(char *str, int start, int finish);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 // char *lexe_token(char *str,int len,int start);
 //////////list////
 t_list	*ft_lstnew(void *content);
-void	ft_lstadd_back(t_list **lst, t_list *new);
+int ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstlast(t_list *lst);
 void ft_lstclear(t_list **lst);
 #endif

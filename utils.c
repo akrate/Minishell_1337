@@ -6,17 +6,17 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:23:13 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/26 17:36:54 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:42:54 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+int	ft_lstadd_back(t_list **lst, t_list *new)
 {
     t_list *tmp;
 	if (!lst || !new)
-		return;
+		return (1);
 	new->next = NULL;
 
 	if (*lst == NULL)
@@ -30,6 +30,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
+	return (0);
 }
 
 char	*ft_strdup(const char *s)

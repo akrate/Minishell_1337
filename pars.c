@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/26 17:42:00 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:58:29 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,42 @@ void get_pos(char *str,int *i)
             (*i)++;
     }
 }
-char *chr_meta(char *str,int *i)
+t_list *file_node(char *content,t_token_type t_type)
+{
+    t_list	*node;
+
+	node = (t_list *)malloc(sizeof(t_list));
+	if (node == NULL)
+		return (NULL);
+	node->content = content;
+    node->type = t_type;
+	node->next = NULL;
+	return (node);
+}
+t_list *chr_meta(char *str,int *i)
 {
     if (str[*i] == '<')
     {
         if (str[(*i) + 1] == '<')
         {
-            if (str[(*i) + 2] == '<')
-                return (write (1,"parse error near `>'\n",21),NULL);
-            (*i) += 2;
-            return (ft_strdup("<<"));
+            if (is_meta(str[(*i) + 2]))
+                return (write (1,"parse error\n",12),NULL);
+            return ((*i) += 2,file_node(ft_strdup("<<"),T_DLESS));
         }
-        else{
-            (*i)++;
-            return (ft_strdup("<"));
-        }
+        else
+            return ((*i)++,file_node(ft_strdup("<"),T_LESS));
     }else if (str[*i] == '>')
     {
         if (str[(*i) + 1] == '>')
         {
-            if (str[(*i) + 2] == '>')
-                return (write (1,"parse error near `<'\n",21),NULL);
-            (*i) += 2;
-            return (ft_strdup(">>"));
+            if (is_meta(str[(*i) + 2]))
+                return (write (1,"parse error\n",12),NULL);
+            return ((*i) += 2,file_node(ft_strdup(">>"),T_DGREAT));
         }
         else
-        {
-            (*i)++;   
-            return (ft_strdup(">"));
-        }
+            return ((*i)++,file_node(ft_strdup(">"),T_GREAT));
     }else if (str[*i] == '|')
-    {
-        (*i)++;
-        return (ft_strdup("|"));
-    }
+        return ((*i)++,file_node(ft_strdup("|"),T_PIPE));
 }
 t_list *split_cmd(char *str)
 {
@@ -82,13 +84,11 @@ t_list *split_cmd(char *str)
         while (str[i] && str[i] != ' ' && !is_meta(str[i]))
             get_pos(str,&i);
         if (is_meta(str[i]))
-        {
-            meta = chr_meta(str,&i);
-            if (!meta)
+            if (!ft_lstadd_back(&head,chr_meta(str,&i)))
                 return (ft_lstclear(&head), NULL);
-            ft_lstadd_back(&head,ft_lstnew(meta)); 
-        }
-        ft_lstadd_back(&head,ft_lstnew(ft_substr(str,start,i - start)));
+        else
+            if(!ft_lstadd_back(&head,ft_lstnew(ft_substr(str,start,i - start))))
+                return (ft_lstclear(&head), NULL); 
     }
     return (head);
 }
