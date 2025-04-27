@@ -1,4 +1,5 @@
 #include "minishell.h"
+
 void check_pos(char *str ,char *c,int *i)
 {
     while (str[*i])
