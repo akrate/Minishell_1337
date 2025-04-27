@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
+#include "libft/libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -29,6 +30,7 @@ typedef struct s_cmd
     char *token;
 
 } t_cmd;
+
 typedef struct s_list
 {
     char *content;
@@ -37,13 +39,17 @@ typedef struct s_list
 } t_list;
 
 void paring_cmd(char *cmd);
-
-// char *fill_node(char *str, int start, int finish);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-// char *lexe_token(char *str,int len,int start);
+// char	*ft_substr(char const *s, unsigned int start, size_t len);
+// char	*ft_strdup(const char *s);
+int is_meta(char str);
 //////////list////
-t_list	*ft_lstnew(void *content);
+// t_list	*ft_lstnew(void *content);
 int ft_lstadd_back(t_list **lst, t_list *new);
-t_list	*ft_lstlast(t_list *lst);
 void ft_lstclear(t_list **lst);
+int					ft_lstsize(t_list *lst);
+
+//////////////////////////////////////////////////////===>test
+const char *token_type_to_string(t_token_type type);
+//////////////////////////////////////////////////////////
+
 #endif

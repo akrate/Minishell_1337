@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/26 18:58:29 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/27 19:24:06 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void get_pos(char *str,int *i)
             (*i)++;
     }
 }
-t_list *file_node(char *content,t_token_type t_type)
+t_list *fill_node(char *content,t_token_type t_type)
 {
     t_list	*node;
 
@@ -48,28 +48,28 @@ t_list *chr_meta(char *str,int *i)
         {
             if (is_meta(str[(*i) + 2]))
                 return (write (1,"parse error\n",12),NULL);
-            return ((*i) += 2,file_node(ft_strdup("<<"),T_DLESS));
+            return ((*i) += 2,fill_node(ft_strdup("<<"),T_DLESS));
         }
         else
-            return ((*i)++,file_node(ft_strdup("<"),T_LESS));
+            return ((*i)++,fill_node(ft_strdup("<"),T_LESS));
     }else if (str[*i] == '>')
     {
         if (str[(*i) + 1] == '>')
         {
             if (is_meta(str[(*i) + 2]))
                 return (write (1,"parse error\n",12),NULL);
-            return ((*i) += 2,file_node(ft_strdup(">>"),T_DGREAT));
+            return ((*i) += 2,fill_node(ft_strdup(">>"),T_DGREAT));
         }
         else
-            return ((*i)++,file_node(ft_strdup(">"),T_GREAT));
+            return ((*i)++,fill_node(ft_strdup(">"),T_GREAT));
     }else if (str[*i] == '|')
-        return ((*i)++,file_node(ft_strdup("|"),T_PIPE));
+        return ((*i)++,fill_node(ft_strdup("|"),T_PIPE));
+    return (NULL);
 }
 t_list *split_cmd(char *str)
 {
     int i;
     int start;
-    char *meta;
     t_list *head = NULL;
     if (!str)
         return (NULL);
@@ -81,27 +81,107 @@ t_list *split_cmd(char *str)
         while (str[i] == ' ')
             i++;
         start = i;
-        while (str[i] && str[i] != ' ' && !is_meta(str[i]))
+        while (str[i] && str[i] != ' ' && is_meta(str[i]) != 1)
             get_pos(str,&i);
         if (is_meta(str[i]))
-            if (!ft_lstadd_back(&head,chr_meta(str,&i)))
-                return (ft_lstclear(&head), NULL);
+        {
+            if (ft_lstadd_back(&head,chr_meta(str,&i)) == 1)   
+                 return (ft_lstclear(&head), NULL);
+        }
         else
-            if(!ft_lstadd_back(&head,ft_lstnew(ft_substr(str,start,i - start))))
-                return (ft_lstclear(&head), NULL); 
+        {   
+            if(ft_lstadd_back(&head,fill_node(ft_substr(str,start,i - start),T_IDENTIFIER)) == 1)
+             return (ft_lstclear(&head), NULL); 
+        }
     }
     return (head);
 }
+
+
+int checking_close_qoutes(char *str)
+{
+    int i;
+    char c;
+    int d;
+
+    d = 0;
+    i = 0;
+    while (str[i])
+    {
+        if(d == 0 && (str[i] == '\'' || str[i] == '"'))
+        {   
+            c = str[i++];
+            d = 1;
+        }
+        while (str[i] && d != 0)
+        {
+            if (str[i] == c)
+            {
+                d = 0;
+                break;
+            }
+            i++;
+        }  
+        i++;
+    }
+    return (d);
+}
+int checking_cmd(t_list **list)
+{
+    t_list *lst;
+
+    lst = *list;
+    if (lst->type != T_IDENTIFIER)
+    {
+        write(2, "Error: command must end with identifier\n", 41);
+        ft_lstclear(list);
+        return (1);
+    }
+    while (lst)
+    {
+        if (checking_close_qoutes(lst->content) == 1)
+        {
+            write(2, "Error: unclosed quotes found\n", 29);
+            ft_lstclear(list);
+            return (1);
+        }
+        if (lst->next == NULL)
+        {
+            if (lst->type != T_IDENTIFIER)
+            {
+                write(2, "Error: command must end with identifier\n", 41);
+                ft_lstclear(list);
+                return (1);
+            }
+        }
+        lst = lst->next;
+    }
+    return (0); 
+}
+
 void paring_cmd(char *cmd)
 {
     t_list *args = split_cmd(cmd);
     
     t_list *tmp = args;
     if(!tmp)
-        write (1,"error",5);
+    {
+        write (1,"error\n",6);
+        return ;
+    }
+    if (checking_cmd(&args) == 1)
+    {
+        return ;
+    }
     while (tmp)
     {
-        printf("arg: %s\n", (char *)tmp->content);
+        if (checking_close_qoutes(tmp->content) == 1)
+        {
+            write (1,"sd qouts\n",10);
+            ft_lstclear(&args);
+            break;
+        }
+        printf("arg: %s ==>type -> %s \n", (char *)tmp->content,token_type_to_string(tmp->type));
         tmp = tmp->next;
     }
 }
