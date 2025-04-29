@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 10:47:03 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:15:48 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int main()
             break;
         }
         paring_cmd(cmd);
+        // printf("%s\n",skip_qouts(cmd));
         if (*cmd)
             add_history(cmd);
     }

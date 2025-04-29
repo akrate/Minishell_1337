@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 14:39:40 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:30:51 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,6 @@ void get_pos(char *str,int *i)
         while (str[*i] && str[*i] != '\'' && str[*i] != '"' && str[*i] != ' ' && !is_meta(str[*i]))
             (*i)++;
     }
-}
-t_list *fill_node(char *content,t_token_type t_type)
-{
-    t_list	*node;
-
-	node = (t_list *)malloc(sizeof(t_list));
-	if (node == NULL)
-		return (NULL);
-	node->content = content;
-    node->type = t_type;
-	node->next = NULL;
-	return (node);
 }
 t_list *chr_meta(char *str,int *i)
 {
@@ -98,66 +86,6 @@ t_list *split_cmd(char *str)
 }
 
 
-int checking_close_qoutes(char *str)
-{
-    int i;
-    char c;
-    int d;
-
-    d = 0;
-    i = 0;
-    while (str[i])
-    {
-        if(d == 0 && (str[i] == '\'' || str[i] == '"'))
-        {   
-            c = str[i++];
-            d = 1;
-        }
-        while (str[i] && d != 0)
-        {
-            if (str[i] == c)
-            {
-                d = 0;
-                break;
-            }
-            i++;
-        }  
-        i++;
-    }
-    return (d);
-}
-int checking_cmd(t_list **list)
-{
-    t_list *lst;
-
-    lst = *list;
-    if (lst->type != T_IDENTIFIER)
-    {
-        write(2, "Error: command must end with identifier\n", 41);
-        ft_lstclear(list);
-        return (1);
-    }
-    while (lst)
-    {
-        if (checking_close_qoutes(lst->content) == 1)
-        {
-            write(2, "Error: unclosed quotes found\n", 29);
-            ft_lstclear(list);
-            return (1);
-        }
-        if (lst->next == NULL)
-        {
-            if (lst->type != T_IDENTIFIER)
-            {
-                write(2, "Error: command must end with identifier\n", 41);
-                ft_lstclear(list);
-                return (1);
-            }
-        }
-        lst = lst->next;
-    }
-    return (0); 
-}
 
 void paring_cmd(char *cmd)
 {
@@ -182,7 +110,9 @@ void paring_cmd(char *cmd)
             break;
         }
         tmp->content = checking_dolar(tmp->content);
-        printf("arg: %s ==>type -> %s \n", (char *)tmp->content,token_type_to_string(tmp->type));
+        tmp->content = skip_qouts(tmp->content);
+        printf("%s", (char *)tmp->content);
         tmp = tmp->next;
     }
+    printf ("\n");
 }

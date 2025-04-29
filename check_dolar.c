@@ -6,15 +6,16 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:37:05 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 14:40:12 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:55:03 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *ft_strjoin_free(char *s1, char *s2)
+char *ft_strjoin_free(char *s1, char *s2)
 {
-    char *joined = ft_strjoin(s1, s2);
+    char *joined;
+    joined = ft_strjoin(s1, s2);
     free(s1);
     free(s2);
     return joined;

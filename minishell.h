@@ -24,12 +24,21 @@ typedef enum s_token_type
     
 } t_token_type;
 
+typedef struct s_qout
+{
+    int i;
+    int in_quote;
+    char quote_char;
+    char *result;
+    char *tmp;
+} t_qout;
 typedef struct s_cmd
 {
     char *cmd;
     char *token;
 
 } t_cmd;
+/// azbi hadi ta3i
 typedef struct s_dolar
 {
     int i;
@@ -41,6 +50,7 @@ typedef struct s_dolar
     int in_double_quote;
     int start;
 } t_dolar;
+
 typedef struct s_list
 {
     char *content;
@@ -49,15 +59,27 @@ typedef struct s_list
 } t_list;
 
 void paring_cmd(char *cmd);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
-// char	*ft_strdup(const char *s);
+
 int is_meta(char str);
-//////////list////
-// t_list	*ft_lstnew(void *content);
+
 int ft_lstadd_back(t_list **lst, t_list *new);
+
 void ft_lstclear(t_list **lst);
+
 int					ft_lstsize(t_list *lst);
+
 char *checking_dolar(const char *str);
+
+char *ft_strjoin_free(char *s1, char *s2);
+
+char *skip_qouts(char *str);
+
+t_list *fill_node(char *content,t_token_type t_type);
+
+int checking_close_qoutes(char *str);
+
+int checking_cmd(t_list **list);
+
 
 //////////////////////////////////////////////////////===>test
 const char *token_type_to_string(t_token_type type);
