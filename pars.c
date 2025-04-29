@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/27 19:24:06 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/29 14:39:40 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void paring_cmd(char *cmd)
             ft_lstclear(&args);
             break;
         }
+        tmp->content = checking_dolar(tmp->content);
         printf("arg: %s ==>type -> %s \n", (char *)tmp->content,token_type_to_string(tmp->type));
         tmp = tmp->next;
     }

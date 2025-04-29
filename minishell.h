@@ -30,7 +30,17 @@ typedef struct s_cmd
     char *token;
 
 } t_cmd;
-
+typedef struct s_dolar
+{
+    int i;
+    char *result;
+    char *tmp;
+    char *var_name;
+    char *var_value;
+    int in_single_quote;
+    int in_double_quote;
+    int start;
+} t_dolar;
 typedef struct s_list
 {
     char *content;
@@ -47,6 +57,7 @@ int is_meta(char str);
 int ft_lstadd_back(t_list **lst, t_list *new);
 void ft_lstclear(t_list **lst);
 int					ft_lstsize(t_list *lst);
+char *checking_dolar(const char *str);
 
 //////////////////////////////////////////////////////===>test
 const char *token_type_to_string(t_token_type type);
