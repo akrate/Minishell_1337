@@ -68,7 +68,7 @@ void ft_lstclear(t_list **lst);
 
 int					ft_lstsize(t_list *lst);
 
-char *checking_dolar(const char *str);
+char *checking_dolar(char *str);
 
 char *ft_strjoin_free(char *s1, char *s2);
 

@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:37:05 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 17:55:03 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:20:50 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char *ft_strjoin_free(char *s1, char *s2)
 {
     char *joined;
+    
     joined = ft_strjoin(s1, s2);
     free(s1);
     free(s2);
@@ -31,9 +32,8 @@ static void init_solar(t_dolar *dolar)
     dolar->in_single_quote = 0;
     dolar->in_double_quote = 0;
 }
-char *checking_dolar(const char *str)
+char *checking_dolar(char *str)
 {
-   
     t_dolar dolar;
 
     init_solar(&dolar);
@@ -56,6 +56,8 @@ char *checking_dolar(const char *str)
         else if (str[dolar.i] == '$' && !dolar.in_single_quote)
         {
             dolar.start = ++dolar.i;
+            if(!ft_isalnum(str[dolar.i]))
+                return (str);
             while (str[dolar.i] && (ft_isalnum(str[dolar.i]) || str[dolar.i] == '_'))
                 dolar.i++;
             dolar.var_name = ft_substr(str, dolar.start, dolar.i - dolar.start);
