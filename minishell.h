@@ -9,6 +9,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+extern int g_last_exit_code; // global variable for exit code
 typedef enum e_token_type
 {
     T_IDENTIFIER,   // identifier
@@ -69,6 +70,7 @@ typedef struct s_shell
     char **ap;          // parsed input strings
     int pipes;          // number of pipes
     int **fds;          // file descriptors for pipes
+    int child_run;      // flag to indicate if a child process is running
     pid_t *pid;     // array of process IDs
     t_command *cmd;           // array of command structures
 } t_shell;
@@ -93,10 +95,12 @@ void ft_lstclear(t_list **lst, void (*del)(void *));
 /// excution ///
 void execute_cmd(t_shell *sh); // function to execute commands
 void fork_process(t_shell *sh, int proc); // function to fork processes
-int check_cmd(char *cmd); // function to check if a command is a builtin
-char **get_cmd(char *str); // function to get command and arguments 
+void run_child(t_shell *sh, int i, int status); // function to run child processes
+void exit_code(t_shell *sh, int proc); // function to handle exit codes
+int execute_builtin(t_shell *sh, int i); // function to execute builtin commands
+void child(t_shell *sh, int i); // function to handle child process execution
+int exec_cd(t_shell *sh, int i); // function to execute cd command
 void init_cmd(t_shell *shell, int proc); // function to initialize command structures
-char **exec_dir(t_shell *shell, int i); // function to get the execution directory
 int *create_pid(int pid); // function to create an array of process IDs
 int nbr_of_pid(t_shell *shell, int proc); // function to count the number of processes
 void init_cmd2(t_shell *shell, int i); // function to initialize command structures
