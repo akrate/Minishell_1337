@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = minishell
-SRC = main.c utils.c pars.c
+SRC = main.c utils.c pars.c executing/executing_cmd.c executing/executing_cmd_utils.c ft_split.c
 OBJS = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3

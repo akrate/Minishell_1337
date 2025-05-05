@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	count_word(const char *s)
+static int	count_word(const char *s, char c)
 {
 	int	i;
 	int	count;
@@ -21,13 +21,10 @@ static int	count_word(const char *s)
 	i = 0;
 	count = 0;
 	word = 0;
-	///hello world"test" "oolo" 'hh'"h i"
 	while (s[i])
 	{
-		if (s[i] == )
-		{
+		if (s[i] == c)
 			count = 0;
-		}
 		else if (count == 0)
 		{
 			word++;
@@ -37,6 +34,7 @@ static int	count_word(const char *s)
 	}
 	return (word);
 }
+
 
 static char	*str_d(const char *s, int start, int finish)
 {
