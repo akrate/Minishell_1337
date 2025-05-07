@@ -1,5 +1,5 @@
 #include "../minishell.h"
-
+int g_last_exit_code = 0; // Global variable to store the last exit code
 void exit_code(t_shell *shell, int proc)
 {
     int i = 0;
@@ -20,8 +20,8 @@ void run_child(t_shell *shell, int i, int status)
     shell->pid[status] = fork(); // create a new process
     if(shell->pid[status] < 0) // check if fork failed
     {
-        perror("Fork failed"); // print error message
-        exit(EXIT_FAILURE); // exit with failure status
+        printf("Fork failed\n"); // print error message
+        return;
     }
     if(shell->pid[status] == 0)
     {
@@ -29,12 +29,12 @@ void run_child(t_shell *shell, int i, int status)
     }
 
 }
-int execute_builtin(t_shell *shell, int i)
-{
-    if(strcmp("cd", shell->cmd[i].cmd[0]) == 0)
-        return (exec_cd(shell, i));
-    return 0; // return 0 if not a builtin command
-}
+// int execute_builtin(t_shell *shell, int i)
+// {
+//     if(strcmp("cd", shell->cmd[i].cmd[0]) == 0)
+//         return (exec_cd(shell, i));
+//     return 0; // return 0 if not a builtin command
+// }
 void fork_process(t_shell *shell, int proc)
 {
     int i = 0;
@@ -42,20 +42,18 @@ void fork_process(t_shell *shell, int proc)
 
     while (i < proc)
     {
-        if (shell->cmd[i].cmd) //
+        if (shell->cmd[i].cmd)
         {
-            if(shell->cmd[i].builtin == 1) // check if the command is a builtin
-                g_last_exit_code = execute_builtin(shell, i); // execute builtin command
-            else if (shell->cmd[i].cmd[0])
+            if (shell->cmd[i].cmd[0])  // If there's a command to execute
             {
-                shell->child_run = 1; // set child_run to 1
-                run_child(shell, i, status); // run child process
+                shell->child_run = 1;  // Mark that a child process is running
+                run_child(shell, i, status);  // Fork the child process to run the command
                 status++;
             }
         }
         i++;
     }
-    exit_code(shell, proc); // wait for all child processes to finish
-    shell->child_run = 0; // reset child_run to 0
-
+    exit_code(shell, proc);  // Wait for all child processes and collect exit codes
+    shell->child_run = 0;  // Reset the child_run flag
 }
+

@@ -1,59 +1,66 @@
 #include "../minishell.h"
-int cnt_string(char **str)
-{
-    int i = 0;
-    while(str[i])
-        i++;
-    return i;
-}
 
+// Function to count the number of non-builtin commands
 int nbr_of_pid(t_shell *shell, int proc)
 {
     int i;
-    int pid;
+    int pid_count;
 
     i = 0;
-    pid = 0;
-    while(i < proc)
+    pid_count = 0;
+    while (i < proc)
     {
-        if(shell->cmd[i].cmd && shell->cmd[i].builtin == 0)
-            pid++;
+        if (shell->cmd[i].cmd && shell->cmd[i].builtin == 0)  // Check if it's not a builtin command
+            pid_count++;
         i++;
     }
-    return pid;
+    return pid_count;
 }
-int *create_pid(int pid)
+
+// Create an array of PIDs to store the process IDs
+int *create_pid(int pid_count)
 {
     int *pids;
 
-    pids = NULL;
-    if(pid > 0)
+    pids = malloc(sizeof(int) * pid_count);
+    if (!pids)
     {
-        pids = malloc(sizeof(int) * sizeof(pid));
-        if(!pids)
-        {
-            printf("Memory allocation failed\n");
-            return NULL;
-        }
+        perror("Memory allocation failed");
+        return NULL;
     }
     return pids;
 }
 
+// Execute the commands with support for pipes and forking processes
 void execute_cmd(t_shell *shell)
 {
-    int proc = cnt_string(shell->ap);
+    int proc = cnt_string(shell->ap);  // Assuming cnt_string counts the commands to execute
     int pipes = proc - 1;
 
+    // Set up the shell structure
     shell->pipes = pipes;
     shell->fds = NULL;
     shell->pid = NULL;
-    shell->cmd = calloc(proc, sizeof(t_command));
+    shell->cmd = calloc(proc, sizeof(t_command));  // Allocate memory for the commands
     if (!shell->cmd)
     {
-        printf("Memory allocation failed\n");
+        perror("Memory allocation failed");
+        return;
     }
+
+    // Initialize command structure
     init_cmd(shell, proc);
-    if(nbr_of_pid(shell, proc) > 0)
+
+    // Create PID array if there are non-builtin commands
+    if (nbr_of_pid(shell, proc) > 0)
         shell->pid = create_pid(nbr_of_pid(shell, proc));
+
+    // Fork processes
     fork_process(shell, proc);
+
+    // Free allocated memory after execution
+    if (shell->cmd)
+        free(shell->cmd);
+    if (shell->pid)
+        free(shell->pid);
 }

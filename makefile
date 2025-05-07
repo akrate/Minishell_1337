@@ -12,7 +12,7 @@
 
 NAME = minishell
 SRC = main.c utils.c pars.c executing/executing_cmd.c executing/executing_cmd_utils.c ft_split.c \
-	executing/process.c
+	executing/process.c executing/run_child.c executing/utils.c
 OBJS = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3

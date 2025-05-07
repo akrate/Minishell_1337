@@ -3,13 +3,15 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <dirent.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/wait.h>
 #include <termios.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
-extern int g_last_exit_code; // global variable for exit code
+extern int g_last_exit_code;  // Declaration of the global variable
 typedef enum e_token_type
 {
     T_IDENTIFIER,   // identifier
@@ -48,6 +50,7 @@ typedef struct s_env_expander
 typedef struct s_lexer_token
 {
     char *content;
+    char *var;          // variable name
     t_token_type type; // type of token
     struct s_lexer_token *next;   // pointer to the next token
 } t_lexer_token;
@@ -73,6 +76,7 @@ typedef struct s_shell
     int child_run;      // flag to indicate if a child process is running
     pid_t *pid;     // array of process IDs
     t_command *cmd;           // array of command structures
+    t_lexer_token *tokens; // linked list of tokens
 } t_shell;
 
 typedef struct s_list
@@ -105,5 +109,12 @@ int *create_pid(int pid); // function to create an array of process IDs
 int nbr_of_pid(t_shell *shell, int proc); // function to count the number of processes
 void init_cmd2(t_shell *shell, int i); // function to initialize command structures
 void init_shell(t_shell *sh); // function to initialize the shell structure
-
+char	*ft_strjoin_3(char *path, char *cmd, char c); // function to join strings
+int list_size(t_shell *shell); // function to get the size of the token list
+char	*ft_getenv(char *var, t_shell *shell); // function to get environment variables
+char	*get_path(t_shell *shell, int i); // function to get the path of a command
+char	**new_envp(t_shell *shell); // function to create a new environment variable array
+char	**get_cmd(char *str); // function to get command arguments
+void check_redir(t_shell *shell, int i); // function to check for redirection
+int cnt_string(char **str); // function to count the number of strings
 #endif

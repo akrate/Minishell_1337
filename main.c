@@ -11,44 +11,37 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <string.h>
 
-void init_shell(t_shell *sh)
-{
-    sh->ap = NULL;
-    sh->pipes = 0;
-    sh->fds = NULL;
-    sh->pid = NULL;
-    sh->cmd = NULL;
-}
 
-int main()
-{
-    char *cmd;
+// Main function
+int main() {
     t_shell shell;
-	// char *pwd = getcwd(NULL,0); ktjib path li kyn fiha;
-	// printf("%s\n",pwd);
-    while (1)
-    {
-        init_shell(&shell);
-        cmd = readline("<minishell> ");
-		if (!cmd)
-        {
-            printf("exit\n");
-            break;
+    char *input;
+
+    // Initialize shell structure
+    shell.tokens = NULL;
+    shell.cmd = NULL;
+    shell.pid = NULL;
+
+    while (1) {
+        // Display prompt and read input
+        input = readline("minishell$ ");
+        if (!input) {
+            printf("\n");
+            break; // Exit the loop when input is NULL (Ctrl+D)
         }
-		// if (cheking_doubleqoutes(cmd) == 1)
-		// {
-            // 	printf("sd qoutes asahbi\n");
-            // }
-            if (*cmd)
-            add_history(cmd);
-         //paring_cmd(cmd);
-        shell.ap = ft_split(cmd, '|');
-        if(shell.ap == NULL || shell.ap[0] == NULL)
-        {
-            execute_cmd(&shell);
-        }
+
+        // Add input to history
+        add_history(input);
+
+        // Parse the command
+        paring_cmd(input);
+
+        // Execute the command
+        execute_cmd(&shell);
+
+        // Free input after use
+        free(input);
     }
-    return 0;
+
 }
