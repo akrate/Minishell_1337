@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cheking_lexer.c                                    :+:      :+:    :+:   */
+/*   handle_meta.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 18:21:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/05/01 17:00:20 by aoussama         ###   ########.fr       */
+/*   Created: 2025/05/01 17:08:43 by aoussama          #+#    #+#             */
+/*   Updated: 2025/05/01 17:11:05 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_meta(char str)
+void handle_meta(t_list **list)
 {
-    if (str == '<' || str == '>' || str == '|')
-        return (1);
-    else 
-        return (0);
-}
+    t_list *tmp;
+    tmp = *list;
 
-int finde_meta(t_list *list)
-{
-    while (list)
+    while (tmp)
     {
-        if (list->type != T_IDENTIFIER)
-            return (1);
-        list = list->next;
+        while (tmp->type == T_IDENTIFIER)
+        {
+            
+        }
     }
-    return (0);
 }

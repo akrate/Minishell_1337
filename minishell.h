@@ -15,8 +15,8 @@ typedef enum s_token_type
     T_PIPE, /*this is pipe ->> '|'*/
     T_AND, /*this is and --> ' && '*/
     T_OR, /*this is or --> ' || '*/
-    T_O_PARENT, /*this is open Parenthesis --> ' ( ' */
-    T_C_PARENT, /*this is close Parenthesis --> ' ) '*/
+    // T_O_PARENT, /*this is open Parenthesis --> ' ( ' */
+    // T_C_PARENT, /*this is close Parenthesis --> ' ) '*/
     T_DGREAT, /*this is  double greater than --> ' >> '*/
     T_GREAT, /*this is greater than --> ' > '*/
     T_DLESS, /*this is double less than --> ' << ' */
@@ -38,7 +38,7 @@ typedef struct s_cmd
     char *token;
 
 } t_cmd;
-/// azbi hadi ta3i
+
 typedef struct s_dolar
 {
     int i;

@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 18:30:51 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:40:55 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ t_list *split_cmd(char *str)
     return (head);
 }
 
-
-
 void paring_cmd(char *cmd)
 {
     t_list *args = split_cmd(cmd);
@@ -98,21 +96,17 @@ void paring_cmd(char *cmd)
         return ;
     }
     if (checking_cmd(&args) == 1)
-    {
         return ;
-    }
     while (tmp)
     {
-        if (checking_close_qoutes(tmp->content) == 1)
-        {
-            write (1,"sd qouts\n",10);
-            ft_lstclear(&args);
-            break;
-        }
         tmp->content = checking_dolar(tmp->content);
         tmp->content = skip_qouts(tmp->content);
-        printf("%s", (char *)tmp->content);
+        // printf("%s", (char *)tmp->content);
         tmp = tmp->next;
     }
+    if (finde_meta(args) == 1)
+        hvhf
+    else
+    
     printf ("\n");
 }
