@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nafarid <nafarid@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/11 13:21:10 by nafarid           #+#    #+#             */
+/*   Updated: 2025/05/11 13:21:10 by nafarid          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 int g_last_exit_code = 0; // Global variable to store the last exit code
 void exit_code(t_shell *shell, int proc)
