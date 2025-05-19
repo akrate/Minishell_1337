@@ -3,118 +3,86 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <dirent.h>
 #include <unistd.h>
-#include <string.h>
-#include <sys/wait.h>
 #include <termios.h>
+#include "libft/libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
-extern int g_last_exit_code;  // Declaration of the global variable
-typedef enum e_token_type
+typedef enum s_token_type
 {
-    T_IDENTIFIER,   // identifier
-    T_PIPE,     // pipe
-    T_AND,              // logical AND
-    T_OR,           // logical OR
-    T_O_PARENT, // open parenthesis
-    T_C_PARENT, // close parenthesis
-    T_DGREAT,   // double greater than
-    T_GREAT,    // greater than
-    T_DLESS,    // double less than
-    T_LESS,    // less than
+    T_IDENTIFIER,/*thsi is cmd or file name*/
+    T_PIPE, /*this is pipe ->> '|'*/
+    T_AND, /*this is and --> ' && '*/
+    T_OR, /*this is or --> ' || '*/
+    // T_O_PARENT, /*this is open Parenthesis --> ' ( ' */
+    // T_C_PARENT, /*this is close Parenthesis --> ' ) '*/
+    T_DGREAT, /*this is  double greater than --> ' >> '*/
+    T_GREAT, /*this is greater than --> ' > '*/
+    T_DLESS, /*this is double less than --> ' << ' */
+    T_LESS, /*this is less than-->  ' < ' */
+    
 } t_token_type;
 
-typedef struct s_quote_state
+typedef struct s_qout
 {
-    int i;          // index in the input string
-    int in_quote;   // flag for quote state
-    char quote_char;    // type of quote (single or double)
-    char *result;   // result string
-    char *tmp;      // temporary string
-} t_quote_state;
+    int i;
+    int in_quote;
+    char quote_char;
+    char *result;
+    char *tmp;
+} t_qout;
+typedef struct s_cmd
+{
+    char *cmd;
+    char *token;
 
-typedef struct s_env_expander
-{
-    int i; // index in the input string
-    char *result;   // result string
-    char *tmp;  // temporary string
-    char *var_name;     // name of the variable to expand
-    char *var_value;        // value of the variable
-    int in_single_quote;        // flag for single quotes
-    int in_double_quote;        // flag for double quotes
-    int start;          // start index of the variable name
-} t_env_expander;
+} t_cmd;
 
-typedef struct s_lexer_token
+typedef struct s_dolar
 {
-    char *content;
-    char *var;          // variable name
-    t_token_type type; // type of token
-    struct s_lexer_token *next;   // pointer to the next token
-} t_lexer_token;
-
-typedef struct s_command
-{
-    char **cmd;          // array of arguments
-    char *path;          // path to the command binary
-    int input_fd;              // file descriptor for input redirection
-    int output_fd;        // file descriptor for output redirection
-    int redirin;        // file descriptor for input redirection
-    int redirout;     // file descriptor for output redirection
-    int builtin;           // 0 if not a builtin command, 1 if it is
-    int index;          // index of the command in the array    
-    int sts;                    // status of the command execution
-} t_command;
-
-typedef struct s_shell
-{
-    char **ap;          // parsed input strings
-    int pipes;          // number of pipes
-    int **fds;          // file descriptors for pipes
-    int child_run;      // flag to indicate if a child process is running
-    pid_t *pid;     // array of process IDs
-    t_command *cmd;           // array of command structures
-    t_lexer_token *tokens; // linked list of tokens
-} t_shell;
+    int i;
+    char *result;
+    char *tmp;
+    char *var_name;
+    char *var_value;
+    int in_single_quote;
+    int in_double_quote;
+    int start;
+} t_dolar;
 
 typedef struct s_list
 {
-    void            *content;       // content of the node
-    struct s_list   *next;  // pointer to the next node
+    char *content;
+    t_token_type type;
+    struct s_list *next;
 } t_list;
+
 void paring_cmd(char *cmd);
-char	**ft_split(char const *s, char c);
 
-char *fill_node(char *str, int start, int finish);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-// char *lexe_token(char *str,int len,int start);
-//////////list////
-t_list	*ft_lstnew(void *content);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-t_list	*ft_lstlast(t_list *lst);
-void ft_lstclear(t_list **lst, void (*del)(void *));
+int is_meta(char str);
 
-/// excution ///
-void execute_cmd(t_shell *sh); // function to execute commands
-void fork_process(t_shell *sh, int proc); // function to fork processes
-void run_child(t_shell *sh, int i, int status); // function to run child processes
-void exit_code(t_shell *sh, int proc); // function to handle exit codes
-int execute_builtin(t_shell *sh, int i); // function to execute builtin commands
-void child(t_shell *sh, int i); // function to handle child process execution
-int exec_cd(t_shell *sh, int i); // function to execute cd command
-void init_cmd(t_shell *shell, int proc); // function to initialize command structures
-int *create_pid(int pid); // function to create an array of process IDs
-int nbr_of_pid(t_shell *shell, int proc); // function to count the number of processes
-void init_cmd2(t_shell *shell, int i); // function to initialize command structures
-void init_shell(t_shell *sh); // function to initialize the shell structure
-char	*ft_strjoin_3(char *path, char *cmd, char c); // function to join strings
-int list_size(t_shell *shell); // function to get the size of the token list
-char	*ft_getenv(char *var, t_shell *shell); // function to get environment variables
-char	*get_path(t_shell *shell, int i); // function to get the path of a command
-char	**new_envp(t_shell *shell); // function to create a new environment variable array
-char	**get_cmd(char *str); // function to get command arguments
-void check_redir(t_shell *shell, int i); // function to check for redirection
-int cnt_string(char **str); // function to count the number of strings
+int ft_lstadd_back(t_list **lst, t_list *new);
+
+void ft_lstclear(t_list **lst);
+
+int					ft_lstsize(t_list *lst);
+
+char *checking_dolar(char *str);
+
+char *ft_strjoin_free(char *s1, char *s2);
+
+char *skip_qouts(char *str);
+
+t_list *fill_node(char *content,t_token_type t_type);
+
+int checking_close_qoutes(char *str);
+
+int checking_cmd(t_list **list);
+
+
+//////////////////////////////////////////////////////===>test
+const char *token_type_to_string(t_token_type type);
+//////////////////////////////////////////////////////////
+
 #endif

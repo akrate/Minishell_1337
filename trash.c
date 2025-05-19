@@ -1,4 +1,5 @@
 #include "minishell.h"
+
 void check_pos(char *str ,char *c,int *i)
 {
     while (str[*i])
@@ -352,3 +353,39 @@ t_list *split_cmd(char *str)
     }
     return head;
 }
+
+// char *checking_dolar(char *str)
+// {
+//     int i;
+//     int cout;
+//     int dolar;
+//     int j;
+//     int len;
+//     char *result;
+
+//     cout = 0;
+//     dolar = 0;
+//     len = 0;
+//     while (str[len])
+//     {
+//         if (str[len] == '\'')
+//             cout = 1;
+//         if (str[len] == '$')
+//         {
+//             j = len;
+//             dolar = 1;
+//         }
+//         len++;
+//     }
+//     if (dolar == 1 && cout == 1)
+//     {
+//         i = j;
+//         while (str[j] && str[j] != ' ' && str[j] != '\'' && str[j] != '"')
+//             j++;
+//         result = ft_substr(str,0,i - 1);
+//         result = ft_strjoin(result,getenv(ft_substr(str , i + 1,j - i)));
+//         result = ft_strjoin(result ,ft_substr(str,j,len - j));
+//         return (result);
+//     }
+//     return (str);
+// }

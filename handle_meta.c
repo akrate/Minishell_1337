@@ -1,39 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   handle_meta.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 18:15:48 by aoussama         ###   ########.fr       */
+/*   Created: 2025/05/01 17:08:43 by aoussama          #+#    #+#             */
+/*   Updated: 2025/05/01 17:11:05 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-/////getenv 9ad li founction nhandli $ ??????????
-
-int main()
+void handle_meta(t_list **list)
 {
-    char *cmd;
-	// char *pwd = getcwd(NULL,0); ktjib path li kyn fiha;
-    // paring_cmd("l shello \"jksgdfkjd\" ");
-	// printf("%s\n",pwd);
-    while (1)
-    {
-        cmd = readline("<minishell> ");
-		if (!cmd)
-        {
-            printf("exit\n");
-            break;
-        }
-        paring_cmd(cmd);
-        // printf("%s\n",skip_qouts(cmd));
-        if (*cmd)
-            add_history(cmd);
-    }
+    t_list *tmp;
+    tmp = *list;
 
-    return 0;
+    while (tmp)
+    {
+        while (tmp->type == T_IDENTIFIER)
+        {
+            
+        }
+    }
 }
