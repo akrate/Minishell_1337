@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+         #
+#    By: nafarid <nafarid@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 14:41:13 by nafarid           #+#    #+#              #
-#    Updated: 2025/04/29 18:28:49 by aoussama         ###   ########.fr        #
+#    Updated: 2025/05/22 22:00:34 by nafarid          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-SRC = main.c utils.c pars.c cheking_lexer.c test_function.c check_dolar.c utils1.c 
+SRC = main.c utils.c pars.c cheking_lexer.c test_function.c check_dolar.c utils1.c executing/bultins/echo_cmd.c
 OBJS = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3

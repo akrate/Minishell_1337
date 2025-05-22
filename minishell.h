@@ -89,6 +89,6 @@ t_cmd_exec *create_cmd_exec(t_list *cmd_list);
 //////////////////////////////////////////////////////===>test
 const char *token_type_to_string(t_token_type type);
 //////////////////////////////////////////////////////////
-int execute_builtin(t_list *cmd);
+int execute_builtin(t_cmd_exec *cmd);
 int signal_exec(t_data *data);
 #endif

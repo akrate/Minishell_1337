@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nafarid <nafarid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 18:15:48 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/05/22 22:55:56 by nafarid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,13 @@ int main()
             
             if (cmd_exec)
             {
-                signal_exec(cmd_exec);
+            //    int i = 0;
+            //    while (cmd_exec->argv[i])
+            //    {
+            //         printf("argv[%d] : %s\n",i, cmd_exec->argv[i]);
+            //         i++;
+            //    }
+                    execute_builtin(cmd_exec);
             }
         }
         if (*cmd)
