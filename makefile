@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = minishell
-SRC = main.c utils.c pars.c cheking_lexer.c test_function.c check_dolar.c utils1.c
+SRC = main.c utils.c pars.c cheking_lexer.c test_function.c check_dolar.c utils1.c 
 OBJS = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3

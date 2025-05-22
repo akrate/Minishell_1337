@@ -18,22 +18,32 @@
 int main()
 {
     char *cmd;
-	// char *pwd = getcwd(NULL,0); ktjib path li kyn fiha;
-    // paring_cmd("l shello \"jksgdfkjd\" ");
-	// printf("%s\n",pwd);
+    t_list *cmd_list = NULL;
+
     while (1)
     {
         cmd = readline("<minishell> ");
-		if (!cmd)
+        if (!cmd)
         {
             printf("exit\n");
             break;
         }
-        paring_cmd(cmd);
-        // printf("%s\n",skip_qouts(cmd));
+
+        cmd_list = paring_cmd(cmd);
+        
+        if (cmd_list)
+        {
+            t_cmd_exec *cmd_exec = create_cmd_exec(cmd_list);
+            
+            if (cmd_exec)
+            {
+                signal_exec(cmd_exec);
+            }
+        }
         if (*cmd)
             add_history(cmd);
     }
 
     return 0;
 }
+

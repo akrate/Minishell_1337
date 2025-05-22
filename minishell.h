@@ -57,32 +57,38 @@ typedef struct s_list
     t_token_type type;
     struct s_list *next;
 } t_list;
+// =======Command to Execute Structure ========
+typedef struct s_cmd_exec
+{
+    char **argv;   // arguments for the command
+    char *path;
+    int hd_fd;
+}   t_cmd_exec;
 
-void paring_cmd(char *cmd);
+typedef struct s_data
+{
+    t_cmd_exec *cmd_exec;   // array of commands to execute
+    int			og_fd[2];   // original stdin/out (to restore after redirections)
 
+}   t_data;
+
+
+t_list *paring_cmd(char *cmd);
 int is_meta(char str);
-
 int ft_lstadd_back(t_list **lst, t_list *new);
-
 void ft_lstclear(t_list **lst);
-
 int					ft_lstsize(t_list *lst);
-
 char *checking_dolar(char *str);
-
 char *ft_strjoin_free(char *s1, char *s2);
-
 char *skip_qouts(char *str);
-
 t_list *fill_node(char *content,t_token_type t_type);
-
 int checking_close_qoutes(char *str);
-
 int checking_cmd(t_list **list);
-
+t_cmd_exec *create_cmd_exec(t_list *cmd_list);
 
 //////////////////////////////////////////////////////===>test
 const char *token_type_to_string(t_token_type type);
 //////////////////////////////////////////////////////////
-
+int execute_builtin(t_list *cmd);
+int signal_exec(t_data *data);
 #endif

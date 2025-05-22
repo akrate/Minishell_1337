@@ -17,7 +17,12 @@ int is_n_option(char *str)
 }
 char *remove_quotes(char *str)
 {
-    
+    int len = ft_strlen(str);
+    if(len >= 2 && (str[0] == '\'' && str[len - 1] == '\'' || str[0] == '"' && str[len - 1] == '"'))
+    {
+        return ft_substr(str, 1, len - 2);
+    }
+    return ft_strdup(str);
 }
 int print_echo(char **av)
 {
@@ -46,4 +51,17 @@ int print_echo(char **av)
         write(STDOUT_FILENO, "\n", 1);
     return 0;
 
+}
+int execute_builtin(t_list *cmd)
+{
+    char **av;
+    int i = 0;
+
+    av = ft_split(cmd->content, ' ');
+    if(!av)
+        return 1;
+    if(!ft_strcmp(av[0], "echo"))
+        print_echo(av);
+    free(av);
+    return 0;
 }

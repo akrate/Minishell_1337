@@ -41,12 +41,7 @@ void run_child(t_shell *shell, int i, int status)
     }
 
 }
-// int execute_builtin(t_shell *shell, int i)
-// {
-//     if(strcmp("cd", shell->cmd[i].cmd[0]) == 0)
-//         return (exec_cd(shell, i));
-//     return 0; // return 0 if not a builtin command
-// }
+
 void fork_process(t_shell *shell, int proc)
 {
     int i = 0;
