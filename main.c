@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 18:15:48 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/16 11:41:40 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int main()
 	// char *pwd = getcwd(NULL,0); ktjib path li kyn fiha;
     // paring_cmd("l shello \"jksgdfkjd\" ");
 	// printf("%s\n",pwd);
+    // printf("HOME=%s\n", getenv("HOME"));
+
     while (1)
     {
         cmd = readline("<minishell> ");

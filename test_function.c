@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:31:53 by aoussama          #+#    #+#             */
-/*   Updated: 2025/05/01 17:05:09 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/15 14:00:02 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ const char *token_type_to_string(t_token_type type)
         return "T_AND";
     if (type == T_OR)
         return "T_OR";
-    // if (type == T_O_PARENT)
-    //     return "T_O_PARENT";
-    // if (type == T_C_PARENT)
-        // return "T_C_PARENT";
     if (type == T_DGREAT)
         return "T_DGREAT";
     if (type == T_GREAT)

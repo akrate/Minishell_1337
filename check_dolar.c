@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:37:05 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/30 18:20:50 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:38:26 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char *ft_strjoin_free(char *s1, char *s2)
     free(s2);
     return joined;
 }
-static void init_solar(t_dolar *dolar)
+static void init_dolar(t_dolar *dolar)
 {
     dolar->i = 0;
     dolar->start = 0;
@@ -32,11 +32,12 @@ static void init_solar(t_dolar *dolar)
     dolar->in_single_quote = 0;
     dolar->in_double_quote = 0;
 }
+
 char *checking_dolar(char *str)
 {
     t_dolar dolar;
 
-    init_solar(&dolar);
+    init_dolar(&dolar);
     while (str[dolar.i])
     {
         if (str[dolar.i] == '\'' && !dolar.in_double_quote)

@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:26:11 by aoussama          #+#    #+#             */
-/*   Updated: 2025/05/01 17:04:12 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:15:41 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,41 @@ static void init_qouts(t_qout *strc)
     strc->result = ft_strdup("");
     strc->tmp = NULL;
 }
+char *remove_space_in_dqout(char *str)
+{
+    int i = 0;
+    int j;
+    int k = 0;
+    char *result;
+    char **tmp;
+
+    if (!str || str[0] != '"')
+        return (str);
+    result = ft_strdup("");
+    tmp = malloc(sizeof(char *));
+    while (str[i])
+    {
+        while (str[i] == ' ' && str[i])
+            i++;
+
+        j = i;
+        while (str[i] != ' ' && str[i])
+            i++;
+        if (i > j)
+        {
+            tmp[k++] = ft_substr(str, j, i - j);
+            // result = ft_strjoin(result, tmp);
+            // free(tmp);
+        }
+    }
+    k = 0;
+    while (tmp[k])
+    {
+        printf("%s\n",tmp[k++]);
+    }
+    return (tmp[0]);
+}
+
 char *skip_qouts(char *str)
 {
     t_qout qout;

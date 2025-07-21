@@ -32,6 +32,7 @@ typedef struct s_qout
     char *result;
     char *tmp;
 } t_qout;
+
 typedef struct s_cmd
 {
     char *cmd;
@@ -83,6 +84,9 @@ int checking_cmd(t_list **list);
 
 //////////////////////////////////////////////////////===>test
 const char *token_type_to_string(t_token_type type);
-//////////////////////////////////////////////////////////
+char *remove_space_in_dqout(char *str);
+void convert_dolar(t_list **list);
+//////////////////////////////////////////////////////////=====>tool
+t_list *chr_meta(char *str,int *i);
 
 #endif
