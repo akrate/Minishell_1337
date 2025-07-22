@@ -55,6 +55,7 @@ typedef struct s_dolar
 typedef struct s_list
 {
     char *content;
+    int remove_qoute;
     t_token_type type;
     struct s_list *next;
 } t_list;
@@ -73,9 +74,9 @@ char *checking_dolar(char *str);
 
 char *ft_strjoin_free(char *s1, char *s2);
 
-char *skip_qouts(char *str);
+char *skip_qouts(char *str,int rm_qu);
 
-t_list *fill_node(char *content,t_token_type t_type);
+t_list *fill_node(char *content,t_token_type t_type,int rm_qu);
 
 int checking_close_qoutes(char *str);
 

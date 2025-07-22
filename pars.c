@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/21 09:57:11 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:34:54 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,22 @@ t_list *chr_meta(char *str,int *i)
         {
             if (is_meta(str[(*i) + 2]))
                 return (write (1,"parse error\n",12),NULL);
-            return ((*i) += 2,fill_node(ft_strdup("<<"),T_DLESS));
+            return ((*i) += 2,fill_node(ft_strdup("<<"),T_DLESS,1));
         }
         else
-            return ((*i)++,fill_node(ft_strdup("<"),T_LESS));
+            return ((*i)++,fill_node(ft_strdup("<"),T_LESS,1));
     }else if (str[*i] == '>')
     {
         if (str[(*i) + 1] == '>')
         {
             if (is_meta(str[(*i) + 2]))
                 return (write (1,"parse error\n",12),NULL);
-            return ((*i) += 2,fill_node(ft_strdup(">>"),T_DGREAT));
+            return ((*i) += 2,fill_node(ft_strdup(">>"),T_DGREAT,1));
         }
         else
-            return ((*i)++,fill_node(ft_strdup(">"),T_GREAT));
+            return ((*i)++,fill_node(ft_strdup(">"),T_GREAT,1));
     }else if (str[*i] == '|')
-        return ((*i)++,fill_node(ft_strdup("|"),T_PIPE));
+        return ((*i)++,fill_node(ft_strdup("|"),T_PIPE,1));
     return (NULL);
 }
 t_list *split_cmd(char *str)
@@ -78,7 +78,7 @@ t_list *split_cmd(char *str)
         }
         else
         {   
-            if(ft_lstadd_back(&head,fill_node(ft_substr(str,start,i - start),T_IDENTIFIER)) == 1)
+            if(ft_lstadd_back(&head,fill_node(ft_substr(str,start,i - start),T_IDENTIFIER,1)) == 1)
              return (ft_lstclear(&head), NULL); 
         }
     }
@@ -101,9 +101,8 @@ void paring_cmd(char *cmd)
     while (tmp)
     {
         tmp->content = checking_dolar(tmp->content);
-        tmp->content = skip_qouts(tmp->content);
-        printf("%s\n", (char *)tmp->content);
+        tmp->content = skip_qouts(tmp->content,tmp->remove_qoute);
+        printf("[%s]-\n", (char *)tmp->content);
         tmp = tmp->next;
     }
-    printf ("\n");
 }

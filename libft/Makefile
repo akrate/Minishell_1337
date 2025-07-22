@@ -6,7 +6,7 @@
 #    By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:29:38 by aoussama          #+#    #+#              #
-#    Updated: 2025/04/27 17:53:27 by aoussama         ###   ########.fr        #
+#    Updated: 2025/07/22 13:57:56 by aoussama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ OBJS = ${SRC:.c=.o}
 all: ${LIB}
 
 %.o: %.c
-	${CC} ${CFLAGS} -c $< -o $@
+	@${CC} ${CFLAGS} -c $< -o $@
 
 ${LIB}: ${OBJS}
 	ar rc ${LIB} ${OBJS}

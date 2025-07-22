@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:36:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/21 11:42:25 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/22 19:12:22 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_list *create_list(char *str,int flag)
         }
         else
         {
-            if(ft_lstadd_back(&list,fill_node(ft_substr(tmp[i],0,ft_strlen(tmp[i])),T_IDENTIFIER)) == 1)
+            if(ft_lstadd_back(&list,fill_node(ft_substr(tmp[i],0,ft_strlen(tmp[i])),T_IDENTIFIER,0)) == 1)
             {
                 ft_lstclear(&list);
                 free_split(tmp);
@@ -154,9 +154,12 @@ void convert_dolar(t_list **list)
             {
                 if (str[i + 1] == '$')
                 {
+                    start = i;
                     while (str[i] == '$')
                         i++;
                     i--;
+                    str1 = ft_substr(str, start, i - start);
+                    result = ft_strjoin_free(result, str1);
                 }
                 if (i > 0)
                 {
@@ -171,7 +174,10 @@ void convert_dolar(t_list **list)
                     i++;
                     while (str[i] != '"' && str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
                         i++;
+                    str1 = ft_substr(str, start, i - start + 1);
+                    result = ft_strjoin_free(result, str1);
                     i++;
+                    continue;
                 }
                 else
                 {
@@ -182,10 +188,10 @@ void convert_dolar(t_list **list)
                     else{
                         
                         while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-                        i++;
+                            i++;
                     }
                 }
-                str1 = skip_qouts(ft_substr(str, start, i - start));
+                str1 = skip_qouts(ft_substr(str, start, i - start),1);
                 // printf("str1 ===>%s\n",str1);
                 var_value = getenv(str1);
                 // printf("var_value ===>%s\n",var_value);
@@ -201,9 +207,8 @@ void convert_dolar(t_list **list)
                     helper = tmp->next;
                     tmp->next = create_list(var_value,flag);
 
-                    if (str[i])
-                        ft_lstadd_back(&tmp->next, fill_node(ft_strdup(str + i), tmp->type));
-
+                    if (str[i] != '\0')
+                        ft_lstadd_back(&tmp->next, fill_node(ft_strdup(str + i), T_IDENTIFIER,1));/// dakchi li b9a mn node 
                     join_lists(&tmp->next, helper);
                     break;
                 }
@@ -215,6 +220,7 @@ void convert_dolar(t_list **list)
                         to_add = ft_strdup("");
                                     
                     result = ft_strjoin_free(result, to_add);
+                    result = ft_strjoin_free(result,ft_strdup(str + i));
                 }
                 break;
             }
@@ -227,6 +233,7 @@ void convert_dolar(t_list **list)
         }
         if (result && *result)
         {
+            
             free(tmp->content);
             tmp->content = result;
         }

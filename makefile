@@ -6,7 +6,7 @@
 #    By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 14:41:13 by nafarid           #+#    #+#              #
-#    Updated: 2025/07/20 16:45:04 by aoussama         ###   ########.fr        #
+#    Updated: 2025/07/22 13:58:18 by aoussama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,11 @@ LIB = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(NAME) : $(OBJS)
-	cd $(LIBFT_DIR) && $(MAKE) 
-	$(CC) $(CFLAGS) $(OBJS) $(LIB) -o $(NAME) $(FLAGS)
+	@cd $(LIBFT_DIR) && $(MAKE) 
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -o $(NAME) $(FLAGS)
 
 %.o :%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	cd $(LIBFT_DIR) && $(MAKE) clean

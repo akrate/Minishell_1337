@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:23:13 by aoussama          #+#    #+#             */
-/*   Updated: 2025/04/29 18:25:11 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:57:40 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void ft_lstclear(t_list **lst)
     *lst = NULL;
 }
 
-t_list *fill_node(char *content,t_token_type t_type)
+t_list *fill_node(char *content,t_token_type t_type,int rm_qu)
 {
     t_list	*node;
 
@@ -73,6 +73,7 @@ t_list *fill_node(char *content,t_token_type t_type)
 		return (NULL);
 	node->content = content;
     node->type = t_type;
+    node->remove_qoute = rm_qu;
 	node->next = NULL;
 	return (node);
 }
