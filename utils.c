@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:23:13 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/22 15:57:40 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/25 11:42:06 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,25 @@ void ft_lstclear(t_list **lst)
 
     *lst = NULL;
 }
+void ft_lstclear_dolar(t_list **lst,char **tmp)
+{
+    t_list *current;
+    t_list *next;
 
+    if (!lst)
+        return;
+    current = *lst;
+
+    while (current)
+    {
+        next = current->next;
+        free(current->content);
+        free(current);
+        current = next;
+    }
+    free_split(tmp);
+    *lst = NULL;
+}
 t_list *fill_node(char *content,t_token_type t_type,int rm_qu)
 {
     t_list	*node;

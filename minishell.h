@@ -60,6 +60,20 @@ typedef struct s_list
     struct s_list *next;
 } t_list;
 
+typedef struct convert
+{
+    int i;
+    char *result;
+    char *str;
+    char *str1;
+    t_list *tmp;
+    t_list *helper;
+    char *var_value;
+    int start;
+    char *to_add;
+    int flag;
+}convert_d;
+
 void paring_cmd(char *cmd);
 
 int is_meta(char str);
@@ -87,6 +101,8 @@ int checking_cmd(t_list **list);
 const char *token_type_to_string(t_token_type type);
 char *remove_space_in_dqout(char *str);
 void convert_dolar(t_list **list);
+void ft_lstclear_dolar(t_list **lst,char **tmp);
+void free_split(char **tmp);
 //////////////////////////////////////////////////////////=====>tool
 t_list *chr_meta(char *str,int *i);
 
