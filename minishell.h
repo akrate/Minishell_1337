@@ -50,6 +50,7 @@ typedef struct s_dolar
     int in_single_quote;
     int in_double_quote;
     int start;
+    int retu;
 } t_dolar;
 
 typedef struct s_list

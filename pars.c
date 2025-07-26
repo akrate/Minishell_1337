@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/22 18:34:54 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:58:46 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,32 @@ t_list *split_cmd(char *str)
 
 void paring_cmd(char *cmd)
 {
-    t_list *args = split_cmd(cmd);
-    
-    if (checking_cmd(&args) == 1)
-        return ;
-    convert_dolar(&args);
-    t_list *tmp = args;
-    if(!tmp)
+    t_list *args;
+    t_list *tmp;
+    int flag;
+    args = split_cmd(cmd);
+    if (args == NULL)
     {
-        write (1,"error\n",6);
-        return ;
+        printf("Error: in malloc");
+        return;
     }
+    flag = 0;
+    if (checking_cmd(&args) == 1)
+    return ;
+    convert_dolar(&args);
+    tmp = args;
     while (tmp)
     {
-        tmp->content = checking_dolar(tmp->content);
+        if (tmp->type == T_DLESS)
+            flag = 2;
+        // if (flag == 0)  
+            // tmp->content = checking_dolar(tmp->content);
+        if (tmp->content == NULL)
+            ft_lstclear(&args);
         tmp->content = skip_qouts(tmp->content,tmp->remove_qoute);
         printf("[%s]-\n", (char *)tmp->content);
+        if (flag != 0)
+            flag--;
         tmp = tmp->next;
     }
 }

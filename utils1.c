@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:26:11 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/22 18:33:20 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:20:39 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char *remove_space_in_dqout(char *str)
         return (str);
     result = ft_strdup("");
     tmp = malloc(sizeof(char *));
+    if (!tmp && !result)
+        return (NULL);
     while (str[i])
     {
         while (str[i] == ' ' && str[i])
@@ -50,7 +52,7 @@ char *remove_space_in_dqout(char *str)
     k = 0;
     while (tmp[k])
     {
-        printf("%s\n",tmp[k++]);
+        printf("tesssssst%s\n",tmp[k++]);
     }
     return (tmp[0]);
 }
@@ -90,12 +92,12 @@ int checking_cmd(t_list **list)
     t_list *lst;
 
     lst = *list;
-    // if (lst->type != T_IDENTIFIER)
-    // {
-    //     write(2, "Error: command must end with identifier\n", 41);
-    //     ft_lstclear(list);
-    //     return (1);
-    // }
+    if (lst->type == T_PIPE)
+    {
+        write(2, "Error: command must end with identifier\n", 41);
+        ft_lstclear(list);
+        return (1);
+    }
     while (lst)
     {
         if (checking_close_qoutes(lst->content) == 1)
@@ -104,15 +106,15 @@ int checking_cmd(t_list **list)
             ft_lstclear(list);
             return (1);
         }
-        // if (lst->next == NULL)
-        // {
-        //     if (lst->type != T_IDENTIFIER)
-        //     {
-        //         write(2, "Error: command must end with identifier\n", 41);
-        //         ft_lstclear(list);
-        //         return (1);
-        //     }
-        // }
+        if (lst->next == NULL)
+        {
+            if (lst->type == T_PIPE)
+            {
+                write(2, "Error: command must end with identifier\n", 41);
+                ft_lstclear(list);
+                return (1);
+            }
+        }
         lst = lst->next;
     }
     return (0); 
