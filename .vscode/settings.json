@@ -2,6 +2,7 @@
     "files.associations": {
         "sstream": "c",
         "chrono": "c",
-        "functional": "c"
+        "functional": "c",
+        "string.h": "c"
     }
 }

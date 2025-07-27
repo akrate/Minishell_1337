@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:26:11 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/26 17:20:39 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:13:06 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,12 @@ char *skip_qouts(char *str, int rm_qu)
             qout.i++;
             continue;
         }
-        qout.tmp = ft_substr(str, qout.i, 1);
-        qout.result = ft_strjoin_free(qout.result, qout.tmp);
+        if (str[qout.i] == '$' && (str[qout.i + 1] == '\'' || str[qout.i + 1] == '"'))
+        {
+            qout.i++;
+            continue;
+        }
+        qout.result = ft_strjoin_free(qout.result, ft_substr(str, qout.i, 1));
         qout.i++;
     }
     return qout.result;

@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:36:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/27 12:05:07 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:18:46 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,32 @@ char *extract_quoted_substring(char *str, int *index, char quote_char)
     return ft_substr(str, start, *index - start);
 }
 
+
 char *handle_double_dollar(char *str, int *index)
 {
     int start = *index;
     while (str[*index] == '$')
         (*index)++;
     (*index)--;
-    return ft_substr(str, start, *index - start);
+
+    char *substr = ft_substr(str, start, *index - start);
+    int len = strlen(substr);
+    char *d_qout = malloc(len + 3);
+    if (!d_qout)
+    {
+        free(substr);
+        return NULL; 
+    }
+
+    d_qout[0] = '"';                 
+    strcpy(d_qout + 1, substr);
+    d_qout[len + 1] = '"';
+    d_qout[len + 2] = '\0';
+    free(substr);
+
+    return d_qout;
 }
+
 
 char *extract_var_name(char *str, int *index)
 {
@@ -223,10 +241,10 @@ void process_content_loop(convert_d *dolr)
     {
         if (dolr->str[dolr->i] == '"' || dolr->str[dolr->i] == '\'')
             process_quotes(dolr);
-        else if (dolr->str[dolr->i] == '$' && dolr->str[dolr->i + 1] != '\'')
+        else if (dolr->str[dolr->i] == '$' && (dolr->str[dolr->i + 1] != '\'' && dolr->str[dolr->i + 1] != '"'))
         {
             process_dollar_sign(dolr);
-            break;
+                break;
         }
         else
             process_regular_char(dolr);
@@ -304,10 +322,7 @@ void convert_dolar(t_list **list)
         if (dolr.tmp == NULL)
             break;
         process_node_content(&dolr);
-        // if (present_dolar(dolr.tmp->content) == 0)
-        // {
-            dolr.tmp = dolr.tmp->next; 
-        // }
+        dolr.tmp = dolr.tmp->next; 
     }
 }
 

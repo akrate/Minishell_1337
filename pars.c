@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/26 21:58:46 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:13:55 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ void paring_cmd(char *cmd)
     {
         if (tmp->type == T_DLESS)
             flag = 2;
-        // if (flag == 0)  
-            // tmp->content = checking_dolar(tmp->content);
+        if (flag == 0)  
+            tmp->content = checking_dolar(tmp->content);
         if (tmp->content == NULL)
             ft_lstclear(&args);
         tmp->content = skip_qouts(tmp->content,tmp->remove_qoute);
