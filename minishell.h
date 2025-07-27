@@ -104,6 +104,7 @@ char *remove_space_in_dqout(char *str);
 void convert_dolar(t_list **list);
 void ft_lstclear_dolar(t_list **lst,char **tmp);
 void free_split(char **tmp);
+int present_dolar(char *str);
 //////////////////////////////////////////////////////////=====>tool
 t_list *chr_meta(char *str,int *i);
 

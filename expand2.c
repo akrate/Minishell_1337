@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:36:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/26 22:01:55 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/27 12:05:07 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ char *extract_quoted_substring(char *str, int *index, char quote_char)
     int start = (*index)++;
     while (str[*index] && str[*index] != quote_char)
         (*index)++;
+    (*index)++;
+        
     return ft_substr(str, start, *index - start);
 }
 
@@ -142,7 +144,7 @@ char *extract_var_name(char *str, int *index)
         if (ft_isdigit(str[*index]))
             (*index)++;
         else {
-            while (str[*index] && (ft_isalnum(str[*index]) || str[*index] == '_'))
+            while (str[*index] && (ft_isalnum(str[*index]) || str[*index] == '_') && str[*index] != '$')
                 (*index)++;
         }
     }
@@ -221,7 +223,7 @@ void process_content_loop(convert_d *dolr)
     {
         if (dolr->str[dolr->i] == '"' || dolr->str[dolr->i] == '\'')
             process_quotes(dolr);
-        else if (dolr->str[dolr->i] == '$')
+        else if (dolr->str[dolr->i] == '$' && dolr->str[dolr->i + 1] != '\'')
         {
             process_dollar_sign(dolr);
             break;
@@ -233,19 +235,25 @@ void process_content_loop(convert_d *dolr)
 
 void process_node_content(convert_d *dolr)
 {
-    init_struct_dolar(dolr);
-
-    process_content_loop(dolr);
-
-    if (dolr->result && *(dolr->result))
+    while (1)
     {
-        free(dolr->tmp->content);
-        dolr->tmp->content = dolr->result;
-    }
-    else
+        
+        init_struct_dolar(dolr);
+        
+        process_content_loop(dolr);
+        
+        if (dolr->result && *(dolr->result))
+        {
+            free(dolr->tmp->content);
+            dolr->tmp->content = dolr->result;
+        }
+        else
         free(dolr->result);
-
-    free(dolr->str);
+        
+        free(dolr->str);
+        if (present_dolar(dolr->tmp->content) == 0)
+            break;
+    }
 }
 
 void skip_t_dless(convert_d *dolr)
@@ -257,7 +265,34 @@ void skip_t_dless(convert_d *dolr)
             dolr->tmp = NULL;
     }
 }
+int present_dolar(char *str)
+{
+    int i;
 
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '\'')
+        {
+            i++;
+            while (str[i] != '\'' && str[i])
+                i++; 
+        }
+        if (str[i] == '"')
+        {
+            i++;
+            while (str[i] != '"' && str[i])
+                i++;
+        }
+        if(str[i] == '$')
+        {
+            if (str[i + 1] != '\'' && str[i + 1] != '"' && str[i + 1] != '$')
+                return (1);
+        }
+        i++;
+    }
+    return (0);
+}
 void convert_dolar(t_list **list)
 {
     convert_d dolr;
@@ -269,9 +304,10 @@ void convert_dolar(t_list **list)
         if (dolr.tmp == NULL)
             break;
         process_node_content(&dolr);
-        process_node_content(&dolr);
-
-        dolr.tmp = dolr.tmp->next;
+        // if (present_dolar(dolr.tmp->content) == 0)
+        // {
+            dolr.tmp = dolr.tmp->next; 
+        // }
     }
 }
 
