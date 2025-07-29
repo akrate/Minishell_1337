@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:36:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/27 21:18:46 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/29 11:40:56 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,19 @@ void free_split(char **tmp)
         free(tmp[i++]);
     free(tmp);
 }
+int dolar_chek(char *str)
+{
+    int i;
 
+    i = 0;
+    while (str[i])
+    {
+        if(str[i] == '$')
+            return (1);
+        i++;
+    }
+    return (0);
+}
 t_list *create_list(char *str,int flag)
 {
     char **tmp;
@@ -77,8 +89,13 @@ t_list *create_list(char *str,int flag)
         }
         else
         {
-            if(ft_lstadd_back(&list,fill_node(ft_substr(tmp[i],0,ft_strlen(tmp[i])),T_IDENTIFIER,0)) == 1)
+            if (dolar_chek(tmp[i]) == 1)
+            {
+                if(ft_lstadd_back(&list,fill_node(wrap_with_pattern(ft_substr(tmp[i],0,ft_strlen(tmp[i]))),T_IDENTIFIER,0)) == 1)
                 return (ft_lstclear_dolar(&list,tmp),NULL);
+            }else
+                if(ft_lstadd_back(&list,fill_node(ft_substr(tmp[i],0,ft_strlen(tmp[i])),T_IDENTIFIER,0)) == 1)
+                    return (ft_lstclear_dolar(&list,tmp),NULL);
         }
         i++;
     }
@@ -93,7 +110,7 @@ char *get_first_word(char *str)
     int i;
     
     i = 0;
-    first = ft_strdup(tmp[0]);
+    first = wrap_with_pattern(ft_strdup(tmp[0]));
     while (tmp[i])
     {
         free(tmp[i]);
@@ -114,9 +131,25 @@ static void init_struct_dolar(convert_d *dolar)
 char *extract_quoted_substring(char *str, int *index, char quote_char)
 {
     int start = (*index)++;
-    while (str[*index] && str[*index] != quote_char)
-        (*index)++;
-    (*index)++;
+    if (quote_char == '~')
+    {
+        while (str[*index])
+        {
+            if (str[*index] == '>' && str[*index + 1] == '>' && str[*index + 2] == '>' && str[*index + 3] == '~')
+            {
+                *index += 4;
+                break;  
+            }
+            (*index)++;
+        }
+    }
+    else
+    {
+        while (str[*index] && str[*index] != quote_char)
+            (*index)++;
+        if (str[*index] == quote_char)
+            (*index)++;
+    }
         
     return ft_substr(str, start, *index - start);
 }
@@ -130,19 +163,19 @@ char *handle_double_dollar(char *str, int *index)
     (*index)--;
 
     char *substr = ft_substr(str, start, *index - start);
-    int len = strlen(substr);
-    char *d_qout = malloc(len + 3);
-    if (!d_qout)
-    {
-        free(substr);
-        return NULL; 
-    }
+    // int len = strlen(substr);
+    char *d_qout = wrap_with_pattern(substr);
+    // if (!d_qout)
+    // {
+    //     free(substr);
+    //     return NULL; 
+    // }
 
-    d_qout[0] = '"';                 
-    strcpy(d_qout + 1, substr);
-    d_qout[len + 1] = '"';
-    d_qout[len + 2] = '\0';
-    free(substr);
+    // d_qout[0] = '*';                 
+    // strcpy(d_qout + 1, substr);
+    // d_qout[len + 1] = '*';
+    // d_qout[len + 2] = '\0';
+    // free(substr);
 
     return d_qout;
 }
@@ -167,7 +200,7 @@ char *extract_var_name(char *str, int *index)
         }
     }
 
-    return skip_qouts(ft_substr(str, start, *index - start), 1);
+    return ft_substr(str, start, *index - start);
 }
 
 void process_var_and_update_list(convert_d *dolr)
@@ -190,10 +223,10 @@ void process_var_and_update_list(convert_d *dolr)
     }
     else
     {
-        if (dolr->var_value)
-            dolr->to_add = ft_strdup(dolr->var_value);
+        if (dolr->var_value == NULL)
+            dolr->to_add = ft_strdup("\"\"");
         else
-            dolr->to_add = ft_strdup("");
+            dolr->to_add = ft_strdup(dolr->var_value);
         dolr->result = ft_strjoin_free(dolr->result, dolr->to_add);
         dolr->result = ft_strjoin_free(dolr->result, ft_strdup(dolr->str + dolr->i));
     }
@@ -225,12 +258,12 @@ void process_dollar_sign(convert_d *dolr)
     dolr->i++;
     process_var_and_update_list(dolr);
 }
-
 void process_quotes(convert_d *dolr)
 {
     char quote_char;
     
     quote_char = dolr->str[dolr->i];
+    
     dolr->str1 = extract_quoted_substring(dolr->str, &dolr->i, quote_char);
     dolr->result = ft_strjoin_free(dolr->result, dolr->str1);
 }
@@ -239,9 +272,9 @@ void process_content_loop(convert_d *dolr)
 {
     while (dolr->str[dolr->i])
     {
-        if (dolr->str[dolr->i] == '"' || dolr->str[dolr->i] == '\'')
+        if (dolr->str[dolr->i] == '"' || dolr->str[dolr->i] == '\'' || (dolr->str[dolr->i] == '~' && dolr->str[dolr->i + 1] == '<' && dolr->str[dolr->i + 2] == '<' && dolr->str[dolr->i + 3] == '<' ))
             process_quotes(dolr);
-        else if (dolr->str[dolr->i] == '$' && (dolr->str[dolr->i + 1] != '\'' && dolr->str[dolr->i + 1] != '"'))
+        else if (dolr->str[dolr->i] == '$' && (dolr->str[dolr->i + 1] != '\'' && dolr->str[dolr->i + 1] != '"') /*&& (ft_isalpha(dolr->str[dolr->i + 1]) == 1 || dolr->str[dolr->i + 1] == '_')*/)
         {
             process_dollar_sign(dolr);
                 break;
@@ -250,27 +283,58 @@ void process_content_loop(convert_d *dolr)
             process_regular_char(dolr);
     }
 }
+int dolar_njma(char *str)
+{
+    int i;
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '*' && str[i + 1] == '$')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+void remove_asterisks(char *str) {
+    
+    int i;
+    int j;
 
+    i = 0;
+    j = 0;
+    while (str[i]) {
+        if (str[i] != '*') {
+            str[j++] = str[i];
+        }
+        i++;
+    }
+    str[j] = '\0';
+}
 void process_node_content(convert_d *dolr)
 {
+
     while (1)
     {
         
         init_struct_dolar(dolr);
         
         process_content_loop(dolr);
-        
-        if (dolr->result && *(dolr->result))
+        if (dolr->result != NULL && *(dolr->result))
         {
+            
             free(dolr->tmp->content);
             dolr->tmp->content = dolr->result;
         }
         else
-        free(dolr->result);
+            free(dolr->result);
         
         free(dolr->str);
         if (present_dolar(dolr->tmp->content) == 0)
             break;
+    }
+    if (has_pattern(dolr->tmp->content) == 1)
+    {
+       remove_pattern(dolr->tmp->content);
     }
 }
 
@@ -302,9 +366,23 @@ int present_dolar(char *str)
             while (str[i] != '"' && str[i])
                 i++;
         }
+        if (str[i] == '~' && str[i + 1] == '<' && str[i + 2] == '<' && str[i + 3] == '<')
+        {
+            i++;
+            while (str[i])
+            {
+                if (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>' && str[i + 3] == '~')
+                {
+                    i = i + 3;
+                    break;  
+                }
+                i++;
+            }
+        }
         if(str[i] == '$')
         {
-            if (str[i + 1] != '\'' && str[i + 1] != '"' && str[i + 1] != '$')
+            // if (str[i + 1] != '\'' && str[i + 1] != '"' && str[i + 1] != '$')
+            if (ft_isalpha(str[i + 1]) == 1 || str[i + 1] == '_')
                 return (1);
         }
         i++;
@@ -313,6 +391,7 @@ int present_dolar(char *str)
 }
 void convert_dolar(t_list **list)
 {
+    
     convert_d dolr;
 
     dolr.tmp = *list;
@@ -325,123 +404,3 @@ void convert_dolar(t_list **list)
         dolr.tmp = dolr.tmp->next; 
     }
 }
-
-
-// void convert_dolar(t_list **list)
-// {
-//     convert_d dolr;
-
-//     dolr.tmp = *list;
-//     while (dolr.tmp)
-//     {
-//         if (dolr.tmp->type == T_DLESS) {
-//             if (dolr.tmp->next != NULL && dolr.tmp->next->next != NULL) {
-//                 dolr.tmp = dolr.tmp->next->next;
-//             } else {
-//                 break;
-//             }
-//         }
-//         init_struct_dolar(&dolr);
-//         while (dolr.str[dolr.i])
-//         {
-//             if (dolr.str[dolr.i] == '"')
-//             {
-//                 dolr.start = dolr.i++;
-//                 while (dolr.str[dolr.i] && dolr.str[dolr.i] != '"')
-//                     dolr.i++;
-//                 dolr.str1 = ft_substr(dolr.str, dolr.start, dolr.i - dolr.start + 1);
-//                 dolr.result = ft_strjoin_free(dolr.result, dolr.str1);
-//             }
-//             else if (dolr.str[dolr.i] == '\'')
-//             {
-//                 dolr.start = dolr.i++;
-//                 while (dolr.str[dolr.i] && dolr.str[dolr.i] != '\'')
-//                     dolr.i++;
-//                 dolr.str1 = ft_substr(dolr.str, dolr.start, dolr.i - dolr.start + 1);
-//                 dolr.result = ft_strjoin_free(dolr.result, dolr.str1);
-//             }
-//             else if (dolr.str[dolr.i] == '$')
-//             {
-//                 if (dolr.str[dolr.i + 1] == '$')
-//                 {
-//                     dolr.start = dolr.i;
-//                     while (dolr.str[dolr.i] == '$')
-//                         dolr.i++;
-//                     dolr.i--;
-//                     dolr.str1 = ft_substr(dolr.str,dolr.start, dolr.i - dolr.start);
-//                     dolr.result = ft_strjoin_free(dolr.result, dolr.str1);
-//                 }
-//                 if (dolr.i > 0)
-//                 {
-//                     free(dolr.tmp->content);
-//                     dolr.tmp->content = ft_substr(dolr.str, 0,dolr.i);
-//                 }
-//                 else
-//                     dolr.flag = 1;
-//                 dolr.start = ++dolr.i;
-//                 if (dolr.str[dolr.i] == '"')
-//                 {
-//                     dolr.i++;
-//                     while (dolr.str[dolr.i] != '"' && dolr.str[dolr.i] && (ft_isalnum(dolr.str[dolr.i]) || dolr.str[dolr.i] == '_'))
-//                         dolr.i++;
-//                     dolr.str1 = ft_substr(dolr.str, dolr.start, dolr.i - dolr.start + 1);
-//                     dolr.result = ft_strjoin_free(dolr.result, dolr.str1);
-//                     dolr.i++;
-//                     continue;
-//                 }
-//                 else
-//                 {
-//                     if (ft_isdigit(dolr.str[dolr.i]) == 1)
-//                         dolr.i++;
-//                     else
-//                     {
-//                         while (dolr.str[dolr.i] && (ft_isalnum(dolr.str[dolr.i]) || dolr.str[dolr.i] == '_'))
-//                             dolr.i++;
-//                     }
-//                 }
-//                 dolr.str1 = skip_qouts(ft_substr(dolr.str, dolr.start, dolr.i - dolr.start),1);
-//                 dolr.var_value = getenv(dolr.str1);
-//                 free(dolr.str1);
-//                 if (dolr.var_value && check_space(dolr.var_value))
-//                 {
-//                     if (dolr.flag == 1)
-//                     {
-//                         free(dolr.tmp->content);
-//                         dolr.tmp->content = get_first_word(dolr.var_value);
-//                     }
-//                     dolr.helper = dolr.tmp->next;
-//                     dolr.tmp->next = create_list(dolr.var_value,dolr.flag);
-//                     if (dolr.str[dolr.i] != '\0')
-//                         ft_lstadd_back(&dolr.tmp->next, fill_node(ft_strdup(dolr.str + dolr.i), T_IDENTIFIER,1));/// dakchi li b9a mn node 
-//                     join_lists(&dolr.tmp->next, dolr.helper);
-//                     break;
-//                 }
-//                 else
-//                 {
-//                     if (dolr.var_value)
-//                         dolr.to_add = ft_strdup(dolr.var_value);
-//                     else
-//                         dolr.to_add = ft_strdup("");              
-//                     dolr.result = ft_strjoin_free(dolr.result, dolr.to_add);
-//                     dolr.result = ft_strjoin_free(dolr.result,ft_strdup(dolr.str + dolr.i));
-//                 }
-//                 break;
-//             }
-//             else
-//             {
-//                 dolr.str1 = ft_substr(dolr.str, dolr.i, 1);
-//                 dolr.result = ft_strjoin_free(dolr.result, dolr.str1);
-//             }
-//             dolr.i++;
-//         }
-//         if (dolr.result && *(dolr.result))
-//         {
-//             free(dolr.tmp->content);
-//             dolr.tmp->content = dolr.result;
-//         }
-//         else
-//             free(dolr.result);
-//         dolr.tmp = dolr.tmp->next;
-//         free(dolr.str);
-//     }
-// }

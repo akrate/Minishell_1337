@@ -105,6 +105,15 @@ void convert_dolar(t_list **list);
 void ft_lstclear_dolar(t_list **lst,char **tmp);
 void free_split(char **tmp);
 int present_dolar(char *str);
+char* add_single_quotes(const char* str);
+void remove_pattern(char *input);
+char *wrap_with_pattern(const char *input);
+///////////////////////////////////////////////////////
+int has_pattern(const char *input);
+// char *extract_string(const char *input);
+void remove_pattern(char *input);
+char *wrap_with_pattern(const char *input);
+char *extract_string(const char *input);
 //////////////////////////////////////////////////////////=====>tool
 t_list *chr_meta(char *str,int *i);
 

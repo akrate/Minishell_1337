@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:26:11 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/27 18:13:06 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/29 11:57:11 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,18 @@ char *skip_qouts(char *str, int rm_qu)
     return qout.result;
 }
 
+int is_redirection(t_token_type type)
+{
+    if (type == T_DGREAT || type == T_GREAT || type == T_DLESS || type == T_LESS)
+        return (1);
+    return (0);
+}
+
 int checking_cmd(t_list **list)
 {
     t_list *lst;
 
     lst = *list;
-    if (lst->type == T_PIPE)
-    {
-        write(2, "Error: command must end with identifier\n", 41);
-        ft_lstclear(list);
-        return (1);
-    }
     while (lst)
     {
         if (checking_close_qoutes(lst->content) == 1)
@@ -110,16 +111,17 @@ int checking_cmd(t_list **list)
             ft_lstclear(list);
             return (1);
         }
-        if (lst->next == NULL)
+        if (is_redirection(lst->type) && (!lst->next || lst->next->type != T_IDENTIFIER))
         {
-            if (lst->type == T_PIPE)
-            {
                 write(2, "Error: command must end with identifier\n", 41);
-                ft_lstclear(list);
-                return (1);
-            }
+                return (ft_lstclear(list), 1);
+        }
+        if ((*list)->type == T_PIPE || (lst->type == T_PIPE &&  (!lst->next || lst->next->type == T_PIPE)))
+        {
+            write(2, "Error: command must end with identifier\n", 41);
+            return (ft_lstclear(list), 1);
         }
         lst = lst->next;
     }
-    return (0); 
+    return (0);
 }
