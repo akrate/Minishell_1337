@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:36:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/29 11:40:56 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/29 12:57:05 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,10 +231,15 @@ void process_var_and_update_list(convert_d *dolr)
         dolr->result = ft_strjoin_free(dolr->result, ft_strdup(dolr->str + dolr->i));
     }
 }
-
-void process_regular_char(convert_d *dolr)
+void process_regular_char_2(convert_d *dolr)
 {
     dolr->str1 = ft_substr(dolr->str, dolr->i, 1);
+    dolr->result = ft_strjoin_free(dolr->result, dolr->str1);
+    dolr->i++;
+}
+void process_regular_char(convert_d *dolr)
+{
+    dolr->str1 = wrap_with_pattern(ft_substr(dolr->str, dolr->i, 1));
     dolr->result = ft_strjoin_free(dolr->result, dolr->str1);
     dolr->i++;
 }
@@ -276,8 +281,16 @@ void process_content_loop(convert_d *dolr)
             process_quotes(dolr);
         else if (dolr->str[dolr->i] == '$' && (dolr->str[dolr->i + 1] != '\'' && dolr->str[dolr->i + 1] != '"') /*&& (ft_isalpha(dolr->str[dolr->i + 1]) == 1 || dolr->str[dolr->i + 1] == '_')*/)
         {
-            process_dollar_sign(dolr);
+            if (ft_isalpha(dolr->str[dolr->i + 1]) == 0 && dolr->str[dolr->i + 1] != '_')
+            {
+                process_regular_char_2(dolr);
+                continue;
+            }
+            else 
+            { 
+                process_dollar_sign(dolr);
                 break;
+            }
         }
         else
             process_regular_char(dolr);
