@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/28 15:37:05 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:31:10 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_list *chr_meta(char *str,int *i)
     return (NULL);
 }
 
-t_list *split_cmd(char *str)
+t_list *split_cmd(char *str ,int flag)
 {
     int i = 0;
     int start;
@@ -87,7 +87,7 @@ t_list *split_cmd(char *str)
             
             if (i > start)
             {
-                if (ft_lstadd_back(&head, fill_node(ft_substr(str, start, i - start), T_IDENTIFIER, 1)) == 1)
+                if (ft_lstadd_back(&head, fill_node(ft_substr(str, start, i - start), T_IDENTIFIER, flag)) == 1)
                     return (ft_lstclear(&head), NULL);
             }
         }
@@ -100,15 +100,16 @@ void paring_cmd(char *cmd)
 {
     t_list *args;
     t_list *tmp;
+
     int flag;
-    args = split_cmd(cmd);
+    args = split_cmd(cmd,1);
     if (args == NULL)
         return;
     flag = 0;
     if (checking_cmd(&args) == 1)
-    return ;
-    convert_dolar(&args);
-    tmp = args;
+        return ;
+    tmp =  convert_dolar2(&args);
+    ft_lstclear(&args);
     while (tmp)
     {
         if (tmp->type == T_DLESS)

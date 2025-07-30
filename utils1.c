@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:26:11 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/29 11:57:11 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:32:30 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char *skip_qouts(char *str, int rm_qu)
 {
     t_qout qout;
 
-    if (!rm_qu)
+    if (rm_qu == 1)
         return (str);
     init_qouts(&qout);
     while (str[qout.i])

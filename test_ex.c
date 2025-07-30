@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 10:05:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/29 10:47:10 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:17:40 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int has_pattern(const char *input)
 // Extract inner content from pattern
 char *wrap_with_pattern(const char *input) 
 {
-    const char *start_pattern = "~<<<   ";
-    const char *end_pattern = "   >>>~";
+    const char *start_pattern = "~<<<";
+    const char *end_pattern = ">>>~";
 
     size_t input_len = strlen(input);
     size_t start_len = strlen(start_pattern);
@@ -116,7 +116,8 @@ char *extract_string(const char *input)
 
     return out;
 }
-void remove_pattern(char *input) {
+void remove_pattern(char *input)
+{
     const char *start_pattern = "~<<<";
     const char *end_pattern = ">>>~";
     size_t start_len = strlen(start_pattern);
@@ -149,19 +150,11 @@ void remove_pattern(char *input) {
             break;
         }
 
-        // محتوى بين الأنماط
+        // محتوى بين الأنماط بدون إزالة الفراغات
         char *inner_start = start + start_len;
         char *inner_end = end;
 
-        // ازالة المساحات في البداية
-        while (*inner_start == ' ' || *inner_start == '\t')
-            inner_start++;
-
-        // ازالة المساحات في النهاية
-        while (inner_end > inner_start && (*(inner_end - 1) == ' ' || *(inner_end - 1) == '\t'))
-            inner_end--;
-
-        // انسخ المحتوى الداخلي بدون المساحات
+        // انسخ المحتوى الداخلي كامل بدون حذف الفراغات
         while (inner_start < inner_end) {
             *write_pos++ = *inner_start++;
         }
@@ -171,6 +164,7 @@ void remove_pattern(char *input) {
     }
     *write_pos = '\0';
 }
+
 
 // Remove pattern and keep inner content
 // void remove_pattern(char *input) 

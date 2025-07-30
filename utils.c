@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:23:13 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/25 11:42:06 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:20:23 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,14 @@ int checking_close_qoutes(char *str)
         i++;
     }
     return (d);
+}
+t_list *ft_lastlist(t_list *lst)
+{
+    if (!lst)
+        return NULL;
+
+    while (lst->next)
+        lst = lst->next;
+
+    return lst;
 }

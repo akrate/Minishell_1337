@@ -96,8 +96,13 @@ t_list *fill_node(char *content,t_token_type t_type,int rm_qu);
 int checking_close_qoutes(char *str);
 
 int checking_cmd(t_list **list);
-
-
+t_list *ft_lastlist(t_list *lst);
+/////////////////////////////////////////////////////
+t_list *split_cmd(char *str ,int flag);
+t_list *convert_dolar2(t_list **list);
+char *extract_quoted_substring(char *str, int *index, char quote_char);
+int check_space(char *str);
+void join_lists(t_list **a, t_list *b);
 //////////////////////////////////////////////////////===>test
 const char *token_type_to_string(t_token_type type);
 char *remove_space_in_dqout(char *str);
@@ -105,7 +110,7 @@ void convert_dolar(t_list **list);
 void ft_lstclear_dolar(t_list **lst,char **tmp);
 void free_split(char **tmp);
 int present_dolar(char *str);
-char* add_single_quotes(const char* str);
+// char* add_single_quotes(const char* str);
 void remove_pattern(char *input);
 char *wrap_with_pattern(const char *input);
 ///////////////////////////////////////////////////////

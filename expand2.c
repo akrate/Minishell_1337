@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:36:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/29 12:57:05 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:21:12 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,25 +131,11 @@ static void init_struct_dolar(convert_d *dolar)
 char *extract_quoted_substring(char *str, int *index, char quote_char)
 {
     int start = (*index)++;
-    if (quote_char == '~')
-    {
-        while (str[*index])
-        {
-            if (str[*index] == '>' && str[*index + 1] == '>' && str[*index + 2] == '>' && str[*index + 3] == '~')
-            {
-                *index += 4;
-                break;  
-            }
-            (*index)++;
-        }
-    }
-    else
-    {
+
         while (str[*index] && str[*index] != quote_char)
             (*index)++;
         if (str[*index] == quote_char)
             (*index)++;
-    }
         
     return ft_substr(str, start, *index - start);
 }
@@ -277,9 +263,9 @@ void process_content_loop(convert_d *dolr)
 {
     while (dolr->str[dolr->i])
     {
-        if (dolr->str[dolr->i] == '"' || dolr->str[dolr->i] == '\'' || (dolr->str[dolr->i] == '~' && dolr->str[dolr->i + 1] == '<' && dolr->str[dolr->i + 2] == '<' && dolr->str[dolr->i + 3] == '<' ))
+        if (dolr->str[dolr->i] == '"' || dolr->str[dolr->i] == '\'')
             process_quotes(dolr);
-        else if (dolr->str[dolr->i] == '$' && (dolr->str[dolr->i + 1] != '\'' && dolr->str[dolr->i + 1] != '"') /*&& (ft_isalpha(dolr->str[dolr->i + 1]) == 1 || dolr->str[dolr->i + 1] == '_')*/)
+        else if (dolr->str[dolr->i] == '$' && (dolr->str[dolr->i + 1] != '\'' && dolr->str[dolr->i + 1] != '"') )
         {
             if (ft_isalpha(dolr->str[dolr->i + 1]) == 0 && dolr->str[dolr->i + 1] != '_')
             {
@@ -308,21 +294,21 @@ int dolar_njma(char *str)
     }
     return (0);
 }
-void remove_asterisks(char *str) {
+// void remove_asterisks(char *str) {
     
-    int i;
-    int j;
+//     int i;
+//     int j;
 
-    i = 0;
-    j = 0;
-    while (str[i]) {
-        if (str[i] != '*') {
-            str[j++] = str[i];
-        }
-        i++;
-    }
-    str[j] = '\0';
-}
+//     i = 0;
+//     j = 0;
+//     while (str[i]) {
+//         if (str[i] != '*') {
+//             str[j++] = str[i];
+//         }
+//         i++;
+//     }
+//     str[j] = '\0';
+// }
 void process_node_content(convert_d *dolr)
 {
 
@@ -379,22 +365,8 @@ int present_dolar(char *str)
             while (str[i] != '"' && str[i])
                 i++;
         }
-        if (str[i] == '~' && str[i + 1] == '<' && str[i + 2] == '<' && str[i + 3] == '<')
-        {
-            i++;
-            while (str[i])
-            {
-                if (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>' && str[i + 3] == '~')
-                {
-                    i = i + 3;
-                    break;  
-                }
-                i++;
-            }
-        }
         if(str[i] == '$')
         {
-            // if (str[i + 1] != '\'' && str[i + 1] != '"' && str[i + 1] != '$')
             if (ft_isalpha(str[i + 1]) == 1 || str[i + 1] == '_')
                 return (1);
         }
@@ -417,3 +389,82 @@ void convert_dolar(t_list **list)
         dolr.tmp = dolr.tmp->next; 
     }
 }
+
+
+// t_list *process_node_content2(char *str)
+// {
+//     int i;
+//     int start;
+//     int sp;
+//     char qout;
+//     char *result;
+//     char *helper;
+//     t_list *tmp;
+//     t_list *lst;
+//     tmp = NULL;
+//     i = 0;
+//     while (str[i])
+//     {
+//         if (str[i] == '"' || str[i] == '\'')
+//         {
+//             helper = extract_quoted_substring(str,&i,str[i]);
+//             result = ft_strjoin_free(result,helper);
+//         }
+//         else if (str[i] == '$' && (ft_isalpha(str[i + 1]) == 1 || str[i + 1] == '_'))
+//         {
+//             start = ++i;
+//             while (ft_isalnum(str[i]) == 1 ||  str[i] == '_' )
+//                 i++;
+//             helper = getenv(ft_substr(str,start,i - start - 1));
+//             if (check_space(helper) == 1)
+//             {
+//                 if (helper[0] != ' ')
+//                 {
+//                     sp = 0;
+//                     while (helper[sp] && helper[sp] != ' ' && is_meta(helper[sp]) == 0)
+//                         sp++;
+//                     result = ft_strjoin(result,ft_substr(helper,0,sp));
+//                     ft_lstadd_back(&tmp,fill_node(result,T_IDENTIFIER,1));
+//                     free(result);
+//                     join_lists(&tmp,split_cmd(helper + sp));
+//                     free(helper);
+//                 }
+//                 else
+//                 {
+//                     result = ft_strjoin(result,ft_substr(helper,0,sp));
+//                     ft_lstadd_back(&tmp,fill_node(result,T_IDENTIFIER,1));
+//                     free(result);
+//                     join_lists(&tmp,split_cmd(helper + sp));
+//                     free(helper);
+//                 }
+//             }
+//         }
+//         else 
+//         {
+//             result = ft_strjoin_free(result,ft_substr(str,i,1));
+//         }
+//     }
+//     if (result != NULL && *result)
+//     {
+//         lst = ft_lastlist(tmp);
+//         lst->content = ft_strjoin_free(lst->content,result);
+//     }
+//     return(tmp);
+// }
+// t_list *convert_dolar2(t_list **list)
+// {
+//     int i;
+//     t_list *tmp;
+//     while (*list)
+//     {
+//         if (present_dolar((*list)->content) == 0)
+//         {
+//             ft_lstadd_back(&tmp,(*list));
+//         }else 
+//         {
+//             join_lists(&tmp,process_node_content2);
+//         }
+//         (*list) = (*list)->next;
+//     }
+//     return (tmp);
+// }
