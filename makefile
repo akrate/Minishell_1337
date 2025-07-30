@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+         #
+#    By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 14:41:13 by nafarid           #+#    #+#              #
-#    Updated: 2025/07/30 10:24:27 by aoussama         ###   ########.fr        #
+#    Updated: 2025/07/30 14:55:30 by aoussama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-SRC = main.c utils.c pars.c cheking_lexer.c test_function.c check_dolar.c utils1.c expand2.c test_ex.c expand3.c
+SRC = main.c utils.c pars.c cheking_lexer.c test_function.c check_dolar.c utils1.c test_ex.c expand3.c garbage.c
 OBJS = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3

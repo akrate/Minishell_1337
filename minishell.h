@@ -23,7 +23,7 @@ typedef enum s_token_type
     T_LESS, /*this is less than-->  ' < ' */
     
 } t_token_type;
-
+\
 typedef struct s_qout
 {
     int i;
@@ -75,6 +75,19 @@ typedef struct convert
     int flag;
 }convert_d;
 
+typedef struct s_lst_garbage
+{
+   void *ptr;
+   struct s_lst_garbage *next;
+} t_lst_garbage;
+
+typedef struct data
+{
+    t_list *tokens_lst;
+    t_lst_garbage *lst_gc_g;
+    t_lst_garbage *lst_gc_env;
+}t_data;
+
 void paring_cmd(char *cmd);
 
 int is_meta(char str);
@@ -121,5 +134,15 @@ char *wrap_with_pattern(const char *input);
 char *extract_string(const char *input);
 //////////////////////////////////////////////////////////=====>tool
 t_list *chr_meta(char *str,int *i);
+
+
+///////////////////////////Garbage//////////////////////////////
+t_lst_garbage *ft_lstnew(void *ptr);
+void ft_lstadd_back_garbage(t_lst_garbage **lst, t_lst_garbage *new_node);
+void *ft_malloc(size_t size, t_lst_garbage **head);
+void free_garbage(t_lst_garbage **head);
+t_data *set_get_data(void *p);
+
+
 
 #endif

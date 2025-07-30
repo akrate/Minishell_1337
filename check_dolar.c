@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_dolar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:37:05 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/27 17:40:51 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:46:49 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ char *ft_strjoin_free(char *s1, char *s2)
     char *joined;
     
     joined = ft_strjoin(s1, s2);
-    free(s1);
-    free(s2);
     return joined;
 }
 static int init_dolar(t_dolar *dolar)
@@ -150,7 +148,6 @@ char *checking_dolar(char *str)
                 dolar.i++;
             dolar.var_name = ft_substr(str, dolar.start, dolar.i - dolar.start);
             dolar.var_value = getenv(dolar.var_name);
-            free(dolar.var_name);
             if (dolar.var_value)
                 dolar.result = ft_strjoin_free(dolar.result, ft_strdup(dolar.var_value));
         }

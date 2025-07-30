@@ -3,57 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   expand2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:36:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/30 10:21:12 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:56:26 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-int check_space(char *str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] == ' ')
-        {
-            return (1);
-        }
-        i++;
-    }
-    return (0);
-}
 
 
 
-void join_lists(t_list **a, t_list *b)
-{
-    if (!*a)
-    {
-        *a = b;
-        return;
-    }
-
-    t_list *last = *a;
-    while (last->next)
-        last = last->next;
-
-    last->next = b;
-}
 
 
-void free_split(char **tmp)
-{
-    int i = 0;
-    if (!tmp)
-        return;
-    while (tmp[i])
-        free(tmp[i++]);
-    free(tmp);
-}
+
 int dolar_chek(char *str)
 {
     int i;
@@ -99,7 +62,7 @@ t_list *create_list(char *str,int flag)
         }
         i++;
     }
-    return (free_split(tmp),list);
+    return (list);
 }
 
 char *get_first_word(char *str)
@@ -111,12 +74,6 @@ char *get_first_word(char *str)
     
     i = 0;
     first = wrap_with_pattern(ft_strdup(tmp[0]));
-    while (tmp[i])
-    {
-        free(tmp[i]);
-        i++;
-    }
-    free(tmp);
     return (first);
 }
 
@@ -128,17 +85,7 @@ static void init_struct_dolar(convert_d *dolar)
     dolar->start = 0;
     dolar->flag = 0;
 }
-char *extract_quoted_substring(char *str, int *index, char quote_char)
-{
-    int start = (*index)++;
 
-        while (str[*index] && str[*index] != quote_char)
-            (*index)++;
-        if (str[*index] == quote_char)
-            (*index)++;
-        
-    return ft_substr(str, start, *index - start);
-}
 
 
 char *handle_double_dollar(char *str, int *index)
@@ -346,34 +293,7 @@ void skip_t_dless(convert_d *dolr)
             dolr->tmp = NULL;
     }
 }
-int present_dolar(char *str)
-{
-    int i;
 
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] == '\'')
-        {
-            i++;
-            while (str[i] != '\'' && str[i])
-                i++; 
-        }
-        if (str[i] == '"')
-        {
-            i++;
-            while (str[i] != '"' && str[i])
-                i++;
-        }
-        if(str[i] == '$')
-        {
-            if (ft_isalpha(str[i + 1]) == 1 || str[i + 1] == '_')
-                return (1);
-        }
-        i++;
-    }
-    return (0);
-}
 void convert_dolar(t_list **list)
 {
     

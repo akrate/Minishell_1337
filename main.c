@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/22 12:12:46 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:59:09 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,25 @@
 //     // while (str)
 //     return (0);
 // }
+
+t_data *set_get_data(void *p)
+{
+    static t_data *ptr;
+
+    if (p)
+        ptr = p;
+    return (ptr);
+}
 int main()
 {
     char *cmd;
+    t_data data;
 
+    data.lst_gc_env = NULL;
     while (1)
     {
+        data.lst_gc_g = NULL;
+        set_get_data(&data);
         cmd = readline("<minishell> ");
 		if (!cmd)
         {
@@ -38,7 +51,9 @@ int main()
             add_history(cmd);
             paring_cmd(cmd);
         }
+        free_garbage(&data.lst_gc_g);
     }
-
+    free_garbage(&data.lst_gc_g);
+    free_garbage(&data.lst_gc_env);
     return 0;
 }

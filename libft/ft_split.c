@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 14:13:24 by aoussama          #+#    #+#             */
-/*   Updated: 2024/11/13 22:51:03 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:46:07 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*str_d(const char *s, int start, int finish)
 	char	*result;
 	int		i;
 
-	result = (char *)malloc((finish - start + 1) * sizeof(char));
+	result = (char *)ft_malloc((finish - start + 1) * sizeof(char), &(set_get_data(NULL)->lst_gc_g));
 	if (result == NULL)
 	{
 		return (NULL);
@@ -58,20 +58,6 @@ static char	*str_d(const char *s, int start, int finish)
 	return (result);
 }
 
-static void	*ft_free(char **result)
-{
-	int	i;
-
-	i = 0;
-	while (result[i] != NULL)
-	{
-		free(result[i]);
-		i++;
-	}
-	free(result);
-	return (NULL);
-}
-
 char	**ft_split(char const *s, char c)
 {
 	char	**result;
@@ -81,7 +67,7 @@ char	**ft_split(char const *s, char c)
 
 	if (s == NULL)
 		return (NULL);
-	result = (char **)malloc((count_word(s, c) + 1) * sizeof(char *));
+	result = (char **)ft_malloc((count_word(s, c) + 1) * sizeof(char *), &(set_get_data(NULL)->lst_gc_g));
 	if (result == NULL)
 		return (NULL);
 	i = 0;
@@ -96,7 +82,7 @@ char	**ft_split(char const *s, char c)
 		if (start < i)
 			result[j++] = str_d(s, start, i);
 		if (result[j - 1] == NULL)
-			return (ft_free(result));
+			return (NULL);
 	}
 	return (result[j] = NULL, result);
 }

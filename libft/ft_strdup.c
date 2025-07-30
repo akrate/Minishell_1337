@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:41:38 by aoussama          #+#    #+#             */
-/*   Updated: 2024/11/06 20:37:48 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:41:23 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strdup(const char *s)
 
 	len = ft_strlen(s);
 	i = 0;
-	copy = (char *)malloc(len + 1);
+	copy = (char *)ft_malloc(len + 1, &(set_get_data(NULL)->lst_gc_g));
 	if (copy == NULL)
 		return (NULL);
 	while (s[i] != '\0')

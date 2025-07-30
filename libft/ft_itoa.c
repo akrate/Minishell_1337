@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:45:11 by aoussama          #+#    #+#             */
-/*   Updated: 2024/11/05 17:36:50 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:35:15 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_itoa(int n)
 
 	j = n;
 	len = ft_count(j);
-	reslt = (char *)malloc((len + 1) * sizeof(char));
+	reslt = (char *)ft_malloc((len + 1) * sizeof(char), &(set_get_data(NULL)->lst_gc_g));
 	if (!reslt)
 		return (NULL);
 	reslt[len] = '\0';

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:23:13 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/30 10:20:23 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:57:32 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,37 +56,38 @@ void ft_lstclear(t_list **lst)
     while (current)
     {
         next = current->next;
-        free(current->content);
-        free(current);
+        // free(current->content);
+        // free(current);
         current = next;
     }
-
     *lst = NULL;
 }
-void ft_lstclear_dolar(t_list **lst,char **tmp)
-{
-    t_list *current;
-    t_list *next;
+// void ft_lstclear_dolar(t_list **lst,char **tmp)
+// {
+//     t_list *current;
+//     t_list *next;
 
-    if (!lst)
-        return;
-    current = *lst;
+//     if (!lst)
+//         return;
+//     current = *lst;
 
-    while (current)
-    {
-        next = current->next;
-        free(current->content);
-        free(current);
-        current = next;
-    }
-    free_split(tmp);
-    *lst = NULL;
-}
+//     while (current)
+//     {
+//         next = current->next;
+//         // free(current->content);
+//         // free(current);
+//         current = next;
+//     }
+//     // free_split(tmp);
+//     *lst = NULL;
+// }
 t_list *fill_node(char *content,t_token_type t_type,int rm_qu)
 {
     t_list	*node;
+    t_data *data;
 
-	node = (t_list *)malloc(sizeof(t_list));
+    data = set_get_data(NULL);
+	node = (t_list *)ft_malloc(sizeof(t_list), &(data->lst_gc_g));
 	if (node == NULL)
 		return (NULL);
 	node->content = content;

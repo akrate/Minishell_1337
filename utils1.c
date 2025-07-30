@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:26:11 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/30 11:32:30 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:34:52 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char *remove_space_in_dqout(char *str)
     if (!str || str[0] != '"')
         return (str);
     result = ft_strdup("");
-    tmp = malloc(sizeof(char *));
+    tmp = ft_malloc(sizeof(char *), &(set_get_data(NULL)->lst_gc_g));
     if (!tmp && !result)
         return (NULL);
     while (str[i])
