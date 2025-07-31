@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:36:21 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/30 14:56:26 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 15:13:48 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,153 +17,153 @@
 
 
 
-int dolar_chek(char *str)
-{
-    int i;
+// int dolar_chek(char *str)
+// {
+//     int i;
 
-    i = 0;
-    while (str[i])
-    {
-        if(str[i] == '$')
-            return (1);
-        i++;
-    }
-    return (0);
-}
-t_list *create_list(char *str,int flag)
-{
-    char **tmp;
-    t_list *list;
-    int j;
-    int i;
+//     i = 0;
+//     while (str[i])
+//     {
+//         if(str[i] == '$')
+//             return (1);
+//         i++;
+//     }
+//     return (0);
+// }
+// t_list *create_list(char *str,int flag)
+// {
+//     char **tmp;
+//     t_list *list;
+//     int j;
+//     int i;
 
-    tmp = ft_split(str,' ');
-    if (tmp == NULL)
-        return (NULL);
-    i = flag;
-    list = NULL;
-    while (tmp[i])
-    {
-        if (is_meta(tmp[i][0]))
-        {
-            j = 0;
-            if (ft_lstadd_back(&list,chr_meta(tmp[i],&j)) == 1)
-                return (ft_lstclear_dolar(&list,tmp),NULL);
-        }
-        else
-        {
-            if (dolar_chek(tmp[i]) == 1)
-            {
-                if(ft_lstadd_back(&list,fill_node(wrap_with_pattern(ft_substr(tmp[i],0,ft_strlen(tmp[i]))),T_IDENTIFIER,0)) == 1)
-                return (ft_lstclear_dolar(&list,tmp),NULL);
-            }else
-                if(ft_lstadd_back(&list,fill_node(ft_substr(tmp[i],0,ft_strlen(tmp[i])),T_IDENTIFIER,0)) == 1)
-                    return (ft_lstclear_dolar(&list,tmp),NULL);
-        }
-        i++;
-    }
-    return (list);
-}
+//     tmp = ft_split(str,' ');
+//     if (tmp == NULL)
+//         return (NULL);
+//     i = flag;
+//     list = NULL;
+//     while (tmp[i])
+//     {
+//         if (is_meta(tmp[i][0]))
+//         {
+//             j = 0;
+//             if (ft_lstadd_back(&list,chr_meta(tmp[i],&j)) == 1)
+//                 return (ft_lstclear_dolar(&list,tmp),NULL);
+//         }
+//         else
+//         {
+//             if (dolar_chek(tmp[i]) == 1)
+//             {
+//                 if(ft_lstadd_back(&list,fill_node(wrap_with_pattern(ft_substr(tmp[i],0,ft_strlen(tmp[i]))),T_IDENTIFIER,0)) == 1)
+//                 return (ft_lstclear_dolar(&list,tmp),NULL);
+//             }else
+//                 if(ft_lstadd_back(&list,fill_node(ft_substr(tmp[i],0,ft_strlen(tmp[i])),T_IDENTIFIER,0)) == 1)
+//                     return (ft_lstclear_dolar(&list,tmp),NULL);
+//         }
+//         i++;
+//     }
+//     return (list);
+// }
 
-char *get_first_word(char *str)
-{
-    char **tmp;
-    char *first;
-    tmp = ft_split(str,' ');
-    int i;
+// char *get_first_word(char *str)
+// {
+//     char **tmp;
+//     char *first;
+//     tmp = ft_split(str,' ');
+//     int i;
     
-    i = 0;
-    first = wrap_with_pattern(ft_strdup(tmp[0]));
-    return (first);
-}
+//     i = 0;
+//     first = wrap_with_pattern(ft_strdup(tmp[0]));
+//     return (first);
+// }
 
-static void init_struct_dolar(convert_d *dolar)
-{
-    dolar->i = 0;
-    dolar->result = ft_strdup("");
-    dolar->str = ft_strdup(dolar->tmp->content);
-    dolar->start = 0;
-    dolar->flag = 0;
-}
-
-
-
-char *handle_double_dollar(char *str, int *index)
-{
-    int start = *index;
-    while (str[*index] == '$')
-        (*index)++;
-    (*index)--;
-
-    char *substr = ft_substr(str, start, *index - start);
-    // int len = strlen(substr);
-    char *d_qout = wrap_with_pattern(substr);
-    // if (!d_qout)
-    // {
-    //     free(substr);
-    //     return NULL; 
-    // }
-
-    // d_qout[0] = '*';                 
-    // strcpy(d_qout + 1, substr);
-    // d_qout[len + 1] = '*';
-    // d_qout[len + 2] = '\0';
-    // free(substr);
-
-    return d_qout;
-}
+// static void init_struct_dolar(convert_d *dolar)
+// {
+//     dolar->i = 0;
+//     dolar->result = ft_strdup("");
+//     dolar->str = ft_strdup(dolar->tmp->content);
+//     dolar->start = 0;
+//     dolar->flag = 0;
+// }
 
 
-char *extract_var_name(char *str, int *index)
-{
-    int start = *index;
 
-    if (str[*index] == '"') {
-        (*index)++;
-        while (str[*index] && str[*index] != '"' && (ft_isalpha(str[*index]) || str[*index] == '_'))
-            (*index)++;
-        (*index)++;
-    }
-    else {
-        if (ft_isdigit(str[*index]))
-            (*index)++;
-        else {
-            while (str[*index] && (ft_isalnum(str[*index]) || str[*index] == '_') && str[*index] != '$')
-                (*index)++;
-        }
-    }
+// char *handle_double_dollar(char *str, int *index)
+// {
+//     int start = *index;
+//     while (str[*index] == '$')
+//         (*index)++;
+//     (*index)--;
 
-    return ft_substr(str, start, *index - start);
-}
+//     char *substr = ft_substr(str, start, *index - start);
+//     // int len = strlen(substr);
+//     char *d_qout = wrap_with_pattern(substr);
+//     // if (!d_qout)
+//     // {
+//     //     free(substr);
+//     //     return NULL; 
+//     // }
 
-void process_var_and_update_list(convert_d *dolr)
-{
-    dolr->str1 = extract_var_name(dolr->str, &dolr->i);
-    dolr->var_value = getenv(dolr->str1);
-    free(dolr->str1);
-    if (dolr->var_value && check_space(dolr->var_value) == 1)
-    {
-        if (dolr->flag == 1)
-        {
-            free(dolr->tmp->content);
-            dolr->tmp->content = get_first_word(dolr->var_value);
-        }
-        dolr->helper = dolr->tmp->next;
-        dolr->tmp->next = create_list(dolr->var_value, dolr->flag);
-        if (dolr->str[dolr->i] != '\0')
-            ft_lstadd_back(&dolr->tmp->next, fill_node(ft_strdup(dolr->str + dolr->i), T_IDENTIFIER, 1));
-        join_lists(&dolr->tmp->next, dolr->helper);
-    }
-    else
-    {
-        if (dolr->var_value == NULL)
-            dolr->to_add = ft_strdup("\"\"");
-        else
-            dolr->to_add = ft_strdup(dolr->var_value);
-        dolr->result = ft_strjoin_free(dolr->result, dolr->to_add);
-        dolr->result = ft_strjoin_free(dolr->result, ft_strdup(dolr->str + dolr->i));
-    }
-}
+//     // d_qout[0] = '*';                 
+//     // strcpy(d_qout + 1, substr);
+//     // d_qout[len + 1] = '*';
+//     // d_qout[len + 2] = '\0';
+//     // free(substr);
+
+//     return d_qout;
+// }
+
+
+// char *extract_var_name(char *str, int *index)
+// {
+//     int start = *index;
+
+//     if (str[*index] == '"') {
+//         (*index)++;
+//         while (str[*index] && str[*index] != '"' && (ft_isalpha(str[*index]) || str[*index] == '_'))
+//             (*index)++;
+//         (*index)++;
+//     }
+//     else {
+//         if (ft_isdigit(str[*index]))
+//             (*index)++;
+//         else {
+//             while (str[*index] && (ft_isalnum(str[*index]) || str[*index] == '_') && str[*index] != '$')
+//                 (*index)++;
+//         }
+//     }
+
+//     return ft_substr(str, start, *index - start);
+// }
+
+// void process_var_and_update_list(convert_d *dolr)
+// {
+//     dolr->str1 = extract_var_name(dolr->str, &dolr->i);
+//     dolr->var_value = getenv(dolr->str1);
+//     free(dolr->str1);
+//     if (dolr->var_value && check_space(dolr->var_value) == 1)
+//     {
+//         if (dolr->flag == 1)
+//         {
+//             free(dolr->tmp->content);
+//             dolr->tmp->content = get_first_word(dolr->var_value);
+//         }
+//         dolr->helper = dolr->tmp->next;
+//         dolr->tmp->next = create_list(dolr->var_value, dolr->flag);
+//         if (dolr->str[dolr->i] != '\0')
+//             ft_lstadd_back(&dolr->tmp->next, fill_node(ft_strdup(dolr->str + dolr->i), T_IDENTIFIER, 1));
+//         join_lists(&dolr->tmp->next, dolr->helper);
+//     }
+//     else
+//     {
+//         if (dolr->var_value == NULL)
+//             dolr->to_add = ft_strdup("\"\"");
+//         else
+//             dolr->to_add = ft_strdup(dolr->var_value);
+//         dolr->result = ft_strjoin_free(dolr->result, dolr->to_add);
+//         dolr->result = ft_strjoin_free(dolr->result, ft_strdup(dolr->str + dolr->i));
+//     }
+// }
 void process_regular_char_2(convert_d *dolr)
 {
     dolr->str1 = ft_substr(dolr->str, dolr->i, 1);

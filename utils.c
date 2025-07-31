@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:23:13 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/30 14:57:32 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:43:38 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ int	ft_lstadd_back(t_list **lst, t_list *new)
 	new->next = NULL;
 
 	if (*lst == NULL)
-	{
 		*lst = new;
-	}
 	else
 	{
 		tmp = *lst;
@@ -88,8 +86,6 @@ t_list *fill_node(char *content,t_token_type t_type,int rm_qu)
 
     data = set_get_data(NULL);
 	node = (t_list *)ft_malloc(sizeof(t_list), &(data->lst_gc_g));
-	if (node == NULL)
-		return (NULL);
 	node->content = content;
     node->type = t_type;
     node->remove_qoute = rm_qu;
@@ -99,16 +95,14 @@ t_list *fill_node(char *content,t_token_type t_type,int rm_qu)
 
 int checking_close_qoutes(char *str)
 {
-    int i;
+    int i = 0;
+    int d = 0;
     char c;
-    int d;
 
-    d = 0;
-    i = 0;
     while (str[i])
     {
-        if(d == 0 && (str[i] == '\'' || str[i] == '"'))
-        {   
+        if (d == 0 && (str[i] == '\'' || str[i] == '"'))
+        {
             c = str[i++];
             d = 1;
         }
@@ -120,11 +114,13 @@ int checking_close_qoutes(char *str)
                 break;
             }
             i++;
-        }  
-        i++;
+        }
+        if (str[i])
+            i++;
     }
-    return (d);
+    return d;
 }
+
 t_list *ft_lastlist(t_list *lst)
 {
     if (!lst)

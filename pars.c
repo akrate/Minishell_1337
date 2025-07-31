@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aoussama <aoussama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/30 11:31:10 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/07/31 04:32:50 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ t_list *split_cmd(char *str ,int flag)
         if (is_meta(str[i]))
         {
             if (ft_lstadd_back(&head, chr_meta(str, &i)) == 1)
-                return (ft_lstclear(&head), NULL);
+                free_garbage(&(set_get_data(NULL)->lst_gc_g));
+                // return (ft_lstclear(&head), NULL);
         }
         else
         {
@@ -88,12 +89,53 @@ t_list *split_cmd(char *str ,int flag)
             if (i > start)
             {
                 if (ft_lstadd_back(&head, fill_node(ft_substr(str, start, i - start), T_IDENTIFIER, flag)) == 1)
-                    return (ft_lstclear(&head), NULL);
+                    free_garbage(&(set_get_data(NULL)->lst_gc_g));
+                    // return (NULL);
             }
         }
     }
     return head;
 }
+// static void init_qouts(t_qout *strc)
+// {
+//     strc->i = 0;
+//     strc->in_quote = 0;
+//     strc->quote_char = 0;
+//     strc->result = ft_strdup("");
+//     strc->tmp = NULL;
+// }
+// char *skip_double_qout(char *str)
+// {
+//     t_qout qout;
+
+//     init_qouts(&qout);
+
+//     while (str[qout.i])
+//     {
+//         if (str[qout.i] == '"' && qout.in_quote == 0)
+//         {
+//             qout.in_quote = 1;
+//             qout.quote_char = '"'; // Start double quote context
+//             qout.i++; // Skip opening quote
+//             continue;
+//         }
+//         if (str[qout.i] == '"' && qout.in_quote == 1)
+//         {
+//             qout.in_quote = 0;
+//             qout.quote_char = 0; // End double quote context
+//             qout.i++; // Skip closing quote
+//             continue;
+//         }
+
+//         // Append current character to result
+//         char *tmp = ft_substr(str, qout.i, 1);
+//         char *new_res = ft_strjoin(qout.result, tmp);
+//         qout.result = new_res;
+//         qout.i++;
+//     }
+
+//     return qout.result;
+// }
 
 
 void paring_cmd(char *cmd)
@@ -102,13 +144,13 @@ void paring_cmd(char *cmd)
     t_list *tmp;
 
     int flag;
-    args = split_cmd(cmd,1);
+    args = split_cmd(cmd,0);
     if (args == NULL)
         return;
     flag = 0;
     if (checking_cmd(&args) == 1)
         return ;
-    tmp =  convert_dolar2(&args);
+    tmp = convert_dolar2(&args);
     ft_lstclear(&args);
     while (tmp)
     {

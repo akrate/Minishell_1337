@@ -100,7 +100,7 @@ int					ft_lstsize(t_list *lst);
 
 char *checking_dolar(char *str);
 
-char *ft_strjoin_free(char *s1, char *s2);
+// char *ft_strjoin_free(char *s1, char *s2);
 
 char *skip_qouts(char *str,int rm_qu);
 
@@ -118,20 +118,20 @@ int check_space(char *str);
 void join_lists(t_list **a, t_list *b);
 //////////////////////////////////////////////////////===>test
 const char *token_type_to_string(t_token_type type);
-char *remove_space_in_dqout(char *str);
-void convert_dolar(t_list **list);
-void ft_lstclear_dolar(t_list **lst,char **tmp);
-void free_split(char **tmp);
+// char *remove_space_in_dqout(char *str);
+// void convert_dolar(t_list **list);
+// void ft_lstclear_dolar(t_list **lst,char **tmp);
+// void free_split(char **tmp);
 int present_dolar(char *str);
 // char* add_single_quotes(const char* str);
-void remove_pattern(char *input);
-char *wrap_with_pattern(const char *input);
+// void remove_pattern(char *input);
+// char *wrap_with_pattern(const char *input);
 ///////////////////////////////////////////////////////
 int has_pattern(const char *input);
 // char *extract_string(const char *input);
-void remove_pattern(char *input);
-char *wrap_with_pattern(const char *input);
-char *extract_string(const char *input);
+// void remove_pattern(char *input);
+// char *wrap_with_pattern(const char *input);
+// char *extract_string(const char *input);
 //////////////////////////////////////////////////////////=====>tool
 t_list *chr_meta(char *str,int *i);
 
