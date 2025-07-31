@@ -12,16 +12,15 @@
 
 #include "minishell.h"
 
-void handle_meta(t_list **list)
+void	handle_meta(t_list **list)
 {
-    t_list *tmp;
-    tmp = *list;
+	t_list *tmp;
+	tmp = *list;
 
-    while (tmp)
-    {
-        while (tmp->type == T_IDENTIFIER)
-        {
-            
-        }
-    }
+	while (tmp)
+	{
+		while (tmp->type == T_IDENTIFIER)
+		{
+		}
+	}
 }
