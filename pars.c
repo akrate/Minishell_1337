@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/31 19:50:51 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:38:25 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_list	*chr_meta(char *str, int *i)
 		{
 			if (str[(*i) + 2] == '<')
 				return (write(1, "parse error\n", 12), NULL);
-			return ((*i) += 2, fill_node(ft_strdup("<<"), T_DLESS, 1));
+			return ((*i) += 2, fill_node(ft_strdup("<<"), T_HEREDOC, 1));
 		}
 		else
 			return ((*i)++, fill_node(ft_strdup("<"), T_LESS, 1));
@@ -102,11 +102,23 @@ t_list	*split_cmd(char *str, int flag)
 	}
 	return (head);
 }
-
-void	paring_cmd(char *cmd)
+void here(t_list *list)
+{
+	t_list *tmp = list;
+	while (tmp)
+	{
+		if (tmp->type == T_HEREDOC)
+		{
+			heredoc(tmp->next->content);
+		}
+		tmp = tmp->next;
+	}
+}
+void	paring_cmd(char *cmd,t_env **env)
 {
 	t_list	*args;
 	t_list	*tmp;
+	t_list	*hd;
 	int		flag;
 
 	args = split_cmd(cmd, 0);
@@ -115,17 +127,18 @@ void	paring_cmd(char *cmd)
 	flag = 0;
 	if (checking_cmd(&args) == 1)
 		return ;
-	tmp = convert_dolar2(&args);
+	tmp = convert_dolar2(&args,*env);
+	hd = tmp;
 	while (tmp)
 	{
-		if (tmp->type == T_DLESS)
+		if (tmp->type == T_HEREDOC)
 			flag = 2;
 		if (flag == 0)
-			tmp->content = checking_dolar(tmp->content);
+			tmp->content = checking_dolar(tmp->content,*env);
 		tmp->content = skip_qouts(tmp->content, tmp->remove_qoute);
-		printf("[%s]-\n", (char *)tmp->content);
 		if (flag != 0)
 			flag--;
 		tmp = tmp->next;
 	}
+	parc_token(hd,env);
 }

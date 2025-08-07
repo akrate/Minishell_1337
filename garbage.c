@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:58:38 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/31 17:57:59 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:20:53 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	*ft_malloc(size_t size, t_lst_garbage **head)
 	if (!p)
 	{
 		printf("Failed to allocate memory\n");
-		free_garbage(&head);
+		free_garbage(head);
 		exit(1);
 	}
 	new = ft_lstnew(p);

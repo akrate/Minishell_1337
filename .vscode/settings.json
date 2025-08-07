@@ -3,6 +3,8 @@
         "sstream": "c",
         "chrono": "c",
         "functional": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "minishell.h": "c",
+        "cstdlib": "c"
     }
 }

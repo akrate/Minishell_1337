@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:38:20 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/31 19:51:29 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:39:44 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	init_pd(t_pd *pd)
 	pd->tmp = NULL;
 }
 
-t_list	*process_node_content2(char *str)
+t_list	*process_node_content2(char *str,t_env *lst)
 {
 	t_pd	pd;
 
@@ -53,7 +53,7 @@ t_list	*process_node_content2(char *str)
 			while (ft_isalnum(str[pd.i]) || str[pd.i] == '_')
 				pd.i++;
 			pd.env_name = ft_substr(str, pd.start, pd.i - pd.start);
-			pd.env_val = getenv(pd.env_name);
+			pd.env_val = ft_getenv(pd.env_name,lst);
 			if (pd.env_val)
 			{
 				if (check_space(pd.env_val))
@@ -105,14 +105,14 @@ static void	init_st(t_dolar2 *st, t_list *list)
 	st->current = list;
 }
 
-t_list	*convert_dolar2(t_list **list)
+t_list	*convert_dolar2(t_list **list,t_env *env)
 {
 	t_dolar2	st;
 
 	init_st(&st, *list);
 	while (st.current)
 	{
-		if (st.current->type == T_DLESS)
+		if (st.current->type == T_HEREDOC)
 		{
 			if (st.current->next != NULL)
 			{
@@ -129,11 +129,11 @@ t_list	*convert_dolar2(t_list **list)
 		}
 		if (present_dolar(st.current->content) == 0)
 			ft_lstadd_back(&st.tmp,
-				fill_node(skip_single_qout(ft_strdup(st.current->content)),
+				fill_node(ft_strdup(st.current->content),
 					st.current->type, st.current->remove_qoute));
 		else
 		{
-			st.processed = process_node_content2(st.current->content);
+			st.processed = process_node_content2(st.current->content,env);
 			join_lists(&st.tmp, st.processed);
 		}
 		st.current = st.current->next;

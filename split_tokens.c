@@ -6,25 +6,11 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:13:39 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/31 21:05:39 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/07 19:50:00 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-typedef struct s_redriction
-{
-    t_token_type type;
-    char *file;
-    struct s_redriction *next;
-} t_redir;
-
-typedef struct s_spcmd
-{
-    char **cmd;
-    t_redir *redir;
-    struct s_spcmd *next;
-} t_spcmd;
-
 
 t_redir *new_redir(t_token_type type, const char *file)
 {
@@ -87,12 +73,11 @@ static t_spcmd *parse_command_segment(t_list **tmp_ptr)
     int i;
 
     init_parc(&cmd, &i);
-    cmd = NULL;
     tmp = *tmp_ptr;
     while (tmp && tmp->type != T_PIPE)
     {
         if (tmp->type == T_WORD)
-            cmd->cmd[i++] = tmp->content;
+            cmd->cmd[i++] = ft_strdup(tmp->content);
         else if (is_redirection(tmp->type) && tmp->next)
         {
             redir_lstadd_back(&cmd->redir, new_redir(tmp->type, tmp->next->content));
@@ -104,7 +89,27 @@ static t_spcmd *parse_command_segment(t_list **tmp_ptr)
     *tmp_ptr = tmp;
     return cmd;
 }
-void parc_token(t_list *list)
+
+void spcmd_lstadd_back(t_spcmd **lst, t_spcmd *new_node)
+{
+    t_spcmd *temp;
+
+    if (!lst || !new_node)
+        return;
+
+    if (*lst == NULL)
+    {
+        *lst = new_node;
+        return;
+    }
+
+    temp = *lst;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = new_node;
+}
+
+void parc_token(t_list *list,t_env **env)
 {
     t_list *tmp;
     t_spcmd *result;
@@ -116,9 +121,9 @@ void parc_token(t_list *list)
     {
         cmd = parse_command_segment(&tmp);
         spcmd_lstadd_back(&result, cmd);
-
         if (tmp && tmp->type == T_PIPE)
             tmp = tmp->next;
     }
+    ft_exuction(result,env);
 }
 

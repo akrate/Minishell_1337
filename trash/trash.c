@@ -528,3 +528,74 @@
 //         spcmd_lstadd_back(&result, cmd);
 //     }
 // }
+// // char *remove_space_in_dqout(char *str)
+// // {
+// //     int i = 0;
+// //     int j;
+// //     int k = 0;
+// //     char *result;
+// //     char **tmp;
+
+// //     if (!str || str[0] != '"')
+// //         return (str);
+// //     result = ft_strdup("");
+// //     tmp = ft_malloc(sizeof(char *), &(set_get_data(NULL)->lst_gc_g));
+// //     if (!tmp && !result)
+// //         return (NULL);
+// //     while (str[i])
+// //     {
+// //         while (str[i] == ' ' && str[i])
+// //             i++;
+
+// //         j = i;
+// //         while (str[i] != ' ' && str[i])
+// //             i++;
+// //         if (i > j)
+// //         {
+// //             tmp[k++] = ft_substr(str, j, i - j);
+// //             // result = ft_strjoin(result, tmp);
+// //             // free(tmp);
+// //         }
+// //     }
+// //     k = 0;
+// //     while (tmp[k])
+// //     {
+// //         printf("tesssssst%s\n",tmp[k++]);
+// //     }
+// //     return (tmp[0]);
+// // }
+// char *skip_single_qout(char *str)
+// {
+//     t_qout qout;
+
+//     init_qouts(&qout);
+
+//     while (str[qout.i])
+//     {
+//         if (str[qout.i] == '\'' && qout.in_quote == 0)
+//         {
+//             qout.in_quote = 1;
+//             qout.quote_char = '\''; // Start single quote context
+//             qout.i++; // Skip opening quote
+//             continue ;
+//         }
+//         if (str[qout.i] == '\'' && qout.in_quote == 1)
+//         {
+//             qout.in_quote = 0;
+//             qout.quote_char = 0; // End single quote context
+//             qout.i++; // Skip closing quote
+//             continue ;
+//         }
+
+//         // Append current character to result
+//         char *tmp = ft_substr(str, qout.i, 1);
+//         char *new_res = ft_strjoin(qout.result, tmp);
+//         free(tmp);
+//         free(qout.result);
+//         qout.result = new_res;
+
+//         qout.i++;
+//     }
+
+//     return (qout.result);
+// }

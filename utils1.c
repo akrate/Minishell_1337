@@ -6,129 +6,57 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:26:11 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/31 20:00:02 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:13:35 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	init_qouts(t_qout *strc)
+static void init_qouts(t_qout *strc)
 {
-	strc->i = 0;
-	strc->in_quote = 0;
-	strc->quote_char = 0;
-	strc->result = ft_strdup("");
-	strc->tmp = NULL;
+    strc->i = 0;
+    strc->in_quote = 0;
+    strc->quote_char = 0;
+    strc->result = ft_strdup("");
+    strc->tmp = NULL;
 }
-// // char *remove_space_in_dqout(char *str)
-// // {
-// //     int i = 0;
-// //     int j;
-// //     int k = 0;
-// //     char *result;
-// //     char **tmp;
 
-// //     if (!str || str[0] != '"')
-// //         return (str);
-// //     result = ft_strdup("");
-// //     tmp = ft_malloc(sizeof(char *), &(set_get_data(NULL)->lst_gc_g));
-// //     if (!tmp && !result)
-// //         return (NULL);
-// //     while (str[i])
-// //     {
-// //         while (str[i] == ' ' && str[i])
-// //             i++;
-
-// //         j = i;
-// //         while (str[i] != ' ' && str[i])
-// //             i++;
-// //         if (i > j)
-// //         {
-// //             tmp[k++] = ft_substr(str, j, i - j);
-// //             // result = ft_strjoin(result, tmp);
-// //             // free(tmp);
-// //         }
-// //     }
-// //     k = 0;
-// //     while (tmp[k])
-// //     {
-// //         printf("tesssssst%s\n",tmp[k++]);
-// //     }
-// //     return (tmp[0]);
-// // }
-// char *skip_single_qout(char *str)
-// {
-//     t_qout qout;
-
-//     init_qouts(&qout);
-
-//     while (str[qout.i])
-//     {
-//         if (str[qout.i] == '\'' && qout.in_quote == 0)
-//         {
-//             qout.in_quote = 1;
-//             qout.quote_char = '\''; // Start single quote context
-//             qout.i++; // Skip opening quote
-//             continue ;
-//         }
-//         if (str[qout.i] == '\'' && qout.in_quote == 1)
-//         {
-//             qout.in_quote = 0;
-//             qout.quote_char = 0; // End single quote context
-//             qout.i++; // Skip closing quote
-//             continue ;
-//         }
-
-//         // Append current character to result
-//         char *tmp = ft_substr(str, qout.i, 1);
-//         char *new_res = ft_strjoin(qout.result, tmp);
-//         free(tmp);
-//         free(qout.result);
-//         qout.result = new_res;
-
-//         qout.i++;
-//     }
-
-//     return (qout.result);
-// }
-
-char	*skip_qouts(char *str, int rm_qu)
+char *skip_qouts(char *str, int rm_qu)
 {
-	t_qout	qout;
+    t_qout qout;
 
-	if (rm_qu == 1)
-		return (str);
-	init_qouts(&qout);
-	while (str[qout.i])
-	{
-		if (str[qout.i] == '"' && qout.in_quote == 0)
-		{
-			qout.in_quote = 1;
-			qout.quote_char = str[qout.i];
-			qout.i++;
-			continue ;
-		}
-		if (str[qout.i] == qout.quote_char && qout.in_quote == 1)
-		{
-			qout.in_quote = 0;
-			qout.quote_char = 0;
-			qout.i++;
-			continue ;
-		}
-		if (str[qout.i] == '$' && str[qout.i + 1] == '"')
-		{
-			qout.i++;
-			continue ;
-		}
-		qout.result = ft_strjoin(qout.result, ft_substr(str, qout.i, 1));
-		qout.i++;
-	}
-	return (qout.result);
+    if (rm_qu == 1)
+        return (str);
+    init_qouts(&qout);
+    while (str[qout.i])
+    {
+        if ((str[qout.i] == '"' || str[qout.i] == '\'') && qout.in_quote == 0)
+        {
+            qout.in_quote = 1;
+            qout.quote_char = str[qout.i];
+            qout.i++;
+            continue;
+        }
+        if (str[qout.i] == qout.quote_char && qout.in_quote == 1)
+        {
+            qout.in_quote = 0;
+            qout.quote_char = 0;
+            qout.i++;
+            continue;
+        }
+        if (str[qout.i] == '$' && str[qout.i + 1] == '"')
+        {
+            qout.i++;
+            continue;
+        }
+        qout.result = ft_strjoin(qout.result, ft_substr(str, qout.i, 1));
+        qout.i++;
+    }
+    return (qout.result);
 }
 
 int	is_redirection(t_token_type type)
 {
-	if (type == T_DGREAT || type == T_GREAT || type == T_DLESS
+	if (type == T_DGREAT || type == T_GREAT || type == T_HEREDOC
 		|| type == T_LESS)
 		return (1);
 	return (0);
