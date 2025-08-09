@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 13:44:39 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/07 16:51:09 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/09 11:12:55 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_env *copy_env(char **str)
         var = NULL;
         val = NULL;
         srch(str[j], &i);
-        var = ft_substr(str[j], 0, i);
+        var = ft_substr(str[j], 0, i + 1);
         if (str[j][i] == '=')
             val = ft_substr(str[j], i + 1, ft_strlen(str[j]) - i - 1);
         else

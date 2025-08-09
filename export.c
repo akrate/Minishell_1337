@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 15:57:39 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/07 20:47:59 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/09 13:07:44 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,24 @@ int ft_strcmp(const char *s1, const char *s2)
 
 int check_env(char *var,char *val,t_env *lst)
 {
+    int i;
+    char *str1;
+    char *str2;
+
+    i = 0;
+    srch(var,&i);
+    if (var[i] == '=')
+        str2 = ft_substr(var,0,i);
+    else
+        str2 = var;
     while (lst)
     {
-        if (ft_strcmp(var,lst->var) == 0)
+        i = 0;
+        srch(lst->var,&i);
+        str1 = ft_substr(lst->var,0,i);
+        if (ft_strcmp(str2,str1) == 0)
         {
+            lst->var = ft_strdup_env(var);
             lst->val = ft_strdup_env(val);
             return (1);
         }
@@ -37,30 +51,52 @@ int check_env(char *var,char *val,t_env *lst)
     }
     return (0);
 }
-
-void ft_export(char *str,t_env **env)
+void ft_export_hp(t_spcmd *lst, t_env **env)
+{
+    t_env *curr;
+    int i;
+    if (lst->cmd[1] == NULL)
+    {
+        curr = *env;
+        while (curr)
+        {
+            if (ft_strchr(curr->var,'=') != NULL && curr->val[0] == '\0')
+                printf("declare -x %s\"\"\n", curr->var);
+            else if (curr->val[0] == '\0')
+                printf("declare -x %s\n", curr->var);
+            else
+                printf("declare -x %s\"%s\"\n", curr->var, curr->val);
+            curr = curr->next;
+        }
+        return;
+    }
+    i = 1;
+    while (lst->cmd[i])
+    {
+        ft_export(lst->cmd[i],env);
+        i++;
+    }
+}
+void ft_export(char *str, t_env **env)
 {
     int i;
     char *var;
     char *val;
-    if (str == NULL)
+    
+    if (ft_isalpha(str[0]) == 0)
     {
-        print_env(*env);
-        return ;
+        printf("export: `': not a valid identifier\n");
+        return;
     }
     i = 0;
     srch(str,&i);
-    var = ft_substr(str,0,i);
+    var = ft_substr(str,0,i + 1);
     if (str[i] == '=')
         val = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
     else
         val = ft_strdup("");
     if (check_env(var,val,*env) == 1)
-    {
         return;
-    }
     else 
-    {  
         ft_env_add_back(env, ft_env_new(var, val));
-    } 
 }

@@ -168,6 +168,8 @@ void parc_token(t_list *list,t_env **env);
 void ft_exuction(t_spcmd *list,t_env **env);
 //////////////////////////////////////////////////////////
 void print_env(t_env *env);
+void ft_unset(t_spcmd *lst, t_env **env);
+void ft_cd(t_spcmd *lst,t_env **env);
 ////////////////////////////////////////
 
 char *ft_getenv(char *str,t_env *lst);
@@ -178,6 +180,7 @@ char	*ft_strdup_env(const char *s);
 t_env *ft_env_new(char *var,char *val);
 void ft_env_add_back(t_env **head, t_env *new_node);
 void ft_export(char *str,t_env **env);
+void ft_export_hp(t_spcmd *lst, t_env **env);
 void srch(char *str, int *i);
 int ft_strcmp(const char *s1, const char *s2);
 char *heredoc(const char *delimiter);
