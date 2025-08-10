@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 13:44:39 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/09 11:12:55 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/10 13:50:54 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ t_env *copy_env(char **str)
         ft_env_add_back(&lst, ft_env_new(var, val));
         j++;
     }
+    ft_env_add_back(&lst, ft_env_new("?=", "0"));
     return lst;
 }

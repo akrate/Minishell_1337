@@ -154,7 +154,7 @@ t_list	*fill_node(char *content, t_token_type t_type, int rm_qu);
 int	ft_lstadd_back(t_list **lst, t_list *new);
 int	checking_close_qoutes(char *str);
 int	is_meta(char str);
-int	checking_cmd(t_list **list);
+int	checking_cmd(t_list **list,t_env **env);
 t_list	*convert_dolar2(t_list **list,t_env *env);
 char	*checking_dolar(char *str,t_env *env);
 char	*skip_qouts(char *str, int rm_qu);
@@ -170,6 +170,8 @@ void ft_exuction(t_spcmd *list,t_env **env);
 void print_env(t_env *env);
 void ft_unset(t_spcmd *lst, t_env **env);
 void ft_cd(t_spcmd *lst,t_env **env);
+int check_env(char *var,char *val,t_env *lst);
+void ft_exit(t_env *env);
 ////////////////////////////////////////
 
 char *ft_getenv(char *str,t_env *lst);

@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 15:57:39 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/09 13:07:44 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:16:14 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void ft_export_hp(t_spcmd *lst, t_env **env)
 {
     t_env *curr;
     int i;
+    
     if (lst->cmd[1] == NULL)
     {
         curr = *env;
@@ -68,6 +69,7 @@ void ft_export_hp(t_spcmd *lst, t_env **env)
                 printf("declare -x %s\"%s\"\n", curr->var, curr->val);
             curr = curr->next;
         }
+        check_env("?=","0",*env);
         return;
     }
     i = 1;
@@ -83,9 +85,10 @@ void ft_export(char *str, t_env **env)
     char *var;
     char *val;
     
-    if (ft_isalpha(str[0]) == 0)
+    if (ft_isalpha(str[0]) == 0 && str[0] != '_')
     {
-        printf("export: `': not a valid identifier\n");
+        printf("export: `%c': not a valid identifier\n",str[0]);
+        check_env("?=","1",*env);
         return;
     }
     i = 0;
@@ -99,4 +102,5 @@ void ft_export(char *str, t_env **env)
         return;
     else 
         ft_env_add_back(env, ft_env_new(var, val));
+    check_env("?=","0",*env);
 }

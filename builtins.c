@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 13:28:25 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/09 13:30:37 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:31:55 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void ft_unset(t_spcmd *lst, t_env **env)
     {
         curr = *env;
         prev = NULL;
+        if (ft_strcmp(lst->cmd[i],"?") == 0)
+        {
+            i++;
+            continue;
+        }
         while (curr)
         {
             j = 0;
@@ -45,6 +50,7 @@ void ft_unset(t_spcmd *lst, t_env **env)
         }
         i++;
     }
+    check_env("?=","0",*env);
 }
 
 void ft_cd(t_spcmd *lst,t_env **env)
@@ -57,16 +63,19 @@ void ft_cd(t_spcmd *lst,t_env **env)
     if (lst->cmd[2] != NULL)
     {
         printf("cd: too many arguments\n");
+        check_env("?=","1",*env);
         return;
     }
     if (chdir(lst->cmd[1]) == -1)
     {
         perror("chdir");
+        check_env("?=","2",*env);
         return ;
     }
     path_nw = getcwd(NULL,0);
     ft_export(ft_strjoin("OLDPWD=",path_old),env);
     ft_export(ft_strjoin("PWD=",path_nw),env);
+    check_env("?=","0",*env);
     free (path_nw);
     free (path_old);
 }

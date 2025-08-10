@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:38:20 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/07 20:39:44 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/10 14:07:54 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ t_list	*process_node_content2(char *str,t_env *lst)
 			pd.helper = extract_quoted_substring(str, &pd.i, str[pd.i]);
 			pd.result = ft_strjoin(pd.result, pd.helper);
 		}
-		else if (str[pd.i] == '$' && (ft_isalpha(str[pd.i + 1]) || str[pd.i
-					+ 1] == '_'))
+		else if (str[pd.i] == '$' && (ft_isalpha(str[pd.i + 1]) || (str[pd.i
+					+ 1] == '_' || str[pd.i + 1] == '?')))
 		{
 			pd.start = ++pd.i;
-			while (ft_isalnum(str[pd.i]) || str[pd.i] == '_')
+			while (ft_isalnum(str[pd.i]) || (str[pd.i] == '_' || str[pd.i] == '?'))
 				pd.i++;
 			pd.env_name = ft_substr(str, pd.start, pd.i - pd.start);
 			pd.env_val = ft_getenv(pd.env_name,lst);

@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:27:51 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/09 11:13:57 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:17:49 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,19 @@ void print_env(t_env *env)
             printf("%s%s\n",env->var,env->val);
         env = env->next;
     }
+    check_env("?=","0",env);
 }
-void printf_pwd(void)
+void printf_pwd(t_env *env)
 {
     char *str;
 
     str = getcwd(NULL,0);
     printf("%s\n",str);
+    check_env("?=","0",env);
     free (str);
 }
 
-void ex_echo(t_spcmd *lst)
+void ex_echo(t_spcmd *lst,t_env *env)
 {
     int i;
     int option = 0;
@@ -68,6 +70,7 @@ void ex_echo(t_spcmd *lst)
     if (lst->cmd[1] == NULL)
     {
         printf("\n");
+        check_env("?=","0",env);
         return;
     }
     if(ft_strcmp(lst->cmd[1], "-n") == 0)
@@ -84,15 +87,30 @@ void ex_echo(t_spcmd *lst)
     }
     if(option == 0)
         printf("\n");
+    check_env("?=","0",env);
+}
+void ft_exit(t_env *env)
+{
+    char *str;
+    int i;
+    printf("exit\n");
+    str = ft_getenv("?",env); 
+    if (!str)
+        i = 0;
+    else
+        i = ft_atoi(str);     
+    free_garbage(&(set_get_data(NULL)->lst_gc_env));
+    free_garbage(&(set_get_data(NULL)->lst_gc_g));
+    exit(i);
 }
 int ex_built_in(t_spcmd *lst,t_env **env)
 {
     if (ft_strcmp(lst->cmd[0],"echo") == 0)
-        ex_echo(lst);
+        ex_echo(lst,*env);
     else if (ft_strcmp(lst->cmd[0],"cd") == 0)
         ft_cd(lst,env);
     else if (ft_strcmp(lst->cmd[0],"pwd") == 0)
-        printf_pwd();
+        printf_pwd(*env);
     else if (ft_strcmp(lst->cmd[0],"export") == 0)
         ft_export_hp(lst,env);
     else if (ft_strcmp(lst->cmd[0],"unset") == 0)
@@ -100,7 +118,7 @@ int ex_built_in(t_spcmd *lst,t_env **env)
     else if (ft_strcmp(lst->cmd[0],"env") == 0)
         print_env(*env);
     else if (ft_strcmp(lst->cmd[0],"exit") == 0)
-        exit(0);
+        ft_exit(*env);
     return (0);
 }
 void ft_exuction(t_spcmd *list,t_env **env)

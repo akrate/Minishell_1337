@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/07 19:49:50 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:42:13 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ int	main(int ac,char **av,char **env)
 		set_get_data(&data);
 		cmd = readline("<minishell> ");
 		if (!cmd)
-		{
-			printf("exit\n");
 			break ;
-		}
 		if (*cmd)
 		{
 			add_history(cmd);
@@ -65,7 +62,5 @@ int	main(int ac,char **av,char **env)
 		}
 		free_garbage(&data.lst_gc_g);
 	}
-	free_garbage(&data.lst_gc_g);
-	free_garbage(&data.lst_gc_env);
-	return (0);
+	ft_exit(lst);
 }

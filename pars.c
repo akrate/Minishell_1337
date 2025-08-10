@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/07 20:38:25 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/10 14:46:40 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	paring_cmd(char *cmd,t_env **env)
 	if (args == NULL)
 		return ;
 	flag = 0;
-	if (checking_cmd(&args) == 1)
+	if (checking_cmd(&args,env) == 1)
 		return ;
 	tmp = convert_dolar2(&args,*env);
 	hd = tmp;

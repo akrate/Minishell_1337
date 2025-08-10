@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 13:49:31 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/31 13:52:00 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/10 14:11:44 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	present_dolar(char *str)
 		}
 		if (str[i] == '$')
 		{
-			if (ft_isalpha(str[i + 1]) == 1 || str[i + 1] == '_')
+			if (ft_isalpha(str[i + 1]) == 1 || (str[i + 1] == '_' || str[i + 1] == '?'))
 				return (1);
 		}
 		i++;
