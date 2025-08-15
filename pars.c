@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/10 14:46:40 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:22:11 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_list	*chr_meta(char *str, int *i)
 		if (str[(*i) + 1] == '<')
 		{
 			if (str[(*i) + 2] == '<')
-				return (write(1, "parse error\n", 12), NULL);
+				return (write(2, "parse error\n", 12), NULL);
 			return ((*i) += 2, fill_node(ft_strdup("<<"), T_HEREDOC, 1));
 		}
 		else
@@ -51,7 +51,7 @@ t_list	*chr_meta(char *str, int *i)
 		if (str[(*i) + 1] == '>')
 		{
 			if (str[(*i) + 2] == '>')
-				return (write(1, "parse error\n", 12), NULL);
+				return (write(2, "parse error\n", 12), NULL);
 			return ((*i) += 2, fill_node(ft_strdup(">>"), T_DGREAT, 1));
 		}
 		else
@@ -60,7 +60,7 @@ t_list	*chr_meta(char *str, int *i)
 	else if (str[*i] == '|')
 	{
 		if (str[(*i) + 1] == '|')
-			return (write(1, "parse error\n", 12), NULL);
+			return (write(2, "parse error\n", 12), NULL);
 		return ((*i)++, fill_node(ft_strdup("|"), T_PIPE, 1));
 	}
 	return (NULL);

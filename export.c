@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 15:57:39 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/10 15:16:14 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:06:44 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,15 @@ void ft_export_hp(t_spcmd *lst, t_env **env)
         curr = *env;
         while (curr)
         {
-            if (ft_strchr(curr->var,'=') != NULL && curr->val[0] == '\0')
+            if (ft_strcmp(curr->var,"?=") != 0)
+            {   
+                if (ft_strchr(curr->var,'=') != NULL && curr->val[0] == '\0')
                 printf("declare -x %s\"\"\n", curr->var);
-            else if (curr->val[0] == '\0')
+                else if (curr->val[0] == '\0')
                 printf("declare -x %s\n", curr->var);
-            else
+                else
                 printf("declare -x %s\"%s\"\n", curr->var, curr->val);
+            }
             curr = curr->next;
         }
         check_env("?=","0",*env);

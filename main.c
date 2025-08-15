@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/10 16:42:13 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:16:06 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ int	main(int ac,char **av,char **env)
 		}
 		free_garbage(&data.lst_gc_g);
 	}
-	ft_exit(lst);
+	ft_exit(NULL,lst);
 }

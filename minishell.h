@@ -171,7 +171,8 @@ void print_env(t_env *env);
 void ft_unset(t_spcmd *lst, t_env **env);
 void ft_cd(t_spcmd *lst,t_env **env);
 int check_env(char *var,char *val,t_env *lst);
-void ft_exit(t_env *env);
+void ft_exit(char **cmd,t_env *env);
+int check_nber(char *str);
 ////////////////////////////////////////
 
 char *ft_getenv(char *str,t_env *lst);
