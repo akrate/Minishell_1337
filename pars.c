@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 11:55:00 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/15 14:22:11 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:37:10 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,8 @@ void	paring_cmd(char *cmd,t_env **env)
 			tmp->content = checking_dolar(tmp->content,*env);
 		tmp->content = skip_qouts(tmp->content, tmp->remove_qoute);
 		if (flag != 0)
-			flag--;
+		flag--;
+		// printf("\"%s\"\n",tmp->content);
 		tmp = tmp->next;
 	}
 	parc_token(hd,env);

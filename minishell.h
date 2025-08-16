@@ -9,6 +9,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <fcntl.h>
+#include <errno.h>
 
 #define MAX_LINE 1024
 
@@ -174,7 +175,7 @@ int check_env(char *var,char *val,t_env *lst);
 void ft_exit(char **cmd,t_env *env);
 int check_nber(char *str);
 ////////////////////////////////////////
-
+int get_last_node_content(t_list *head);
 char *ft_getenv(char *str,t_env *lst);
 
 
