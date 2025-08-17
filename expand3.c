@@ -6,12 +6,43 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:38:20 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/16 20:48:47 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/17 14:22:41 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_list	*split_dolar(char *str, int flag)
+{
+	int		i;
+	int		start;
+	t_list	*head;
+
+	i = 0;
+	head = NULL;
+	if (!str)
+		return (NULL);
+	while (str[i])
+	{
+		while (str[i] == ' ')
+			i++;
+		if (str[i] == '\0')
+			break ;
+		else
+		{
+			start = i;
+			while (str[i] && str[i] != ' ')
+				i++;
+			if (i > start)
+			{
+				if (ft_lstadd_back(&head, fill_node(ft_substr(str, start, i
+								- start), T_WORD, flag)) == 1)
+					return (NULL);
+			}
+		}
+	}
+	return (head);
+}
 void	join_lists(t_list **a, t_list *b)
 {
 	t_list	*last;
@@ -74,7 +105,7 @@ static void handle_env_with_spaces(t_pd *pd)
     {
         if (pd->result[0] != '\0')
             ft_lstadd_back(&pd->tmp, fill_node(pd->result, T_WORD, 0));
-        join_lists(&pd->tmp, split_cmd(pd->env_val + pd->sp, 1));
+        join_lists(&pd->tmp, split_dolar(pd->env_val + pd->sp, 1));
         pd->result = ft_strdup("");
     }
 }

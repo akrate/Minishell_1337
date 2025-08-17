@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:27:51 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/17 13:58:34 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/17 15:30:20 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,45 +193,7 @@ char *ft_strjoin3(const char *s1, const char *s2, const char *s3)
     char *tmp = ft_strjoin(s1, s2);
     if (!tmp) return NULL;
     char *res = ft_strjoin(tmp, s3);
-    // free(tmp);
     return res;
-}
-
-char *get_cmd_path(char *cmd, t_env *env)
-{
-    char *path_env = ft_getenv("PATH", env);
-    char **paths;
-    char *full_path;
-    int i = 0;
-
-    if (!path_env)
-        return NULL;
-    paths = ft_split(path_env, ':');
-    if (!paths)
-        return NULL;
-    
-    if (ft_strchr(cmd, '/'))
-    {
-        if (access(cmd, X_OK) == 0)
-            return ft_strdup(cmd);
-        else
-        {
-            return NULL;
-        }
-    }
-
-    while (paths[i])
-    {
-        full_path = ft_strjoin3(paths[i], "/", cmd); 
-        if (access(full_path, X_OK) == 0)
-        {
-
-            return full_path;
-        }
-        // free(full_path);
-        i++;
-    }
-    return NULL;
 }
 void update_exit_status(t_env *env, int status)
 {
@@ -241,10 +203,45 @@ void update_exit_status(t_env *env, int status)
         status = WEXITSTATUS(status);
     else
         status = 1;
-
     exit_code = ft_itoa(status);
     check_env("?=", exit_code, env);
-    // free(exit_code);
+}
+
+char *get_cmd_path(char *cmd, t_env *env)
+{
+    char *path_env = ft_getenv("PATH", env);
+    char **paths;
+    char *full_path;
+    int i = 0;
+
+    if (ft_strchr(cmd, '/'))
+    {
+        if (access(cmd, X_OK) == 0)
+            return ft_strdup(cmd);
+        else
+            return NULL;
+    }
+
+    if (!path_env)
+        return NULL;
+
+    paths = ft_split(path_env, ':');
+    if (!paths)
+        return NULL;
+
+    while (paths[i])
+    {
+        full_path = ft_strjoin3(paths[i], "/", cmd);
+        if (access(full_path, X_OK) == 0)
+        {
+            return full_path;
+        }
+        free(full_path);
+        i++;
+    }
+
+
+    return NULL;
 }
 
 void execute_external(t_spcmd *lst, t_env *env)
@@ -253,19 +250,39 @@ void execute_external(t_spcmd *lst, t_env *env)
     int status;
     char *cmd_path;
     char **envp;
+    char *path_env = ft_getenv("PATH", env);
 
     pid = fork();
     if (pid == 0)
     {
         cmd_path = get_cmd_path(lst->cmd[0], env);
+
+        if (ft_strcmp(lst->cmd[0], "sudo") == 0)
+        {
+                printf("minishell: sudo: Permission denied\n");
+                exit(126);
+        }
         if (!cmd_path)
         {
-            printf("%s: command not found\n", lst->cmd[0]);
+            if (ft_strchr(lst->cmd[0], '/'))
+            {
+                printf("minishell: %s: No such file or directory\n", lst->cmd[0]);
+            }
+            else if (path_env == NULL || path_env[0] == '\0')
+            {
+                printf("minishell: %s: No such file or directory\n", lst->cmd[0]);
+            }
+            else
+            {
+                printf("minishell: %s: command not found\n", lst->cmd[0]);
+            }
             exit(127);
         }
+        
         envp = env_to_array(env);
         execve(cmd_path, lst->cmd, envp);
         perror("execve");
+        free(cmd_path);
         exit(EXIT_FAILURE);
     }
     else if (pid < 0)
@@ -278,6 +295,8 @@ void execute_external(t_spcmd *lst, t_env *env)
         update_exit_status(env, status);
     }
 }
+
+
 void handle_redirections(t_redir *redir)
 {
     int fd;
@@ -325,42 +344,73 @@ void execute_pipeline(t_spcmd *list, t_env *env)
 {
     int pipefd[2];
     pid_t pid;
-    int fd_in = 0; 
-
+    int fd_in = 0;
     t_spcmd *curr = list;
+    int cmd_count = count_spcmd_nodes(list);
+    int i = 0;
+    pid_t *pids = malloc(sizeof(pid_t) * cmd_count);
 
     while (curr)
     {
-        pipe(pipefd);
-
+        if (curr->next)
+        {
+            if (pipe(pipefd) == -1)
+            {
+                perror("pipe");
+                exit(EXIT_FAILURE);
+            }
+        }
+        else
+        {
+            pipefd[0] = -1;
+            pipefd[1] = -1;
+        }
         pid = fork();
         if (pid == 0)
         {
-            dup2(fd_in, STDIN_FILENO);
+            if (fd_in != 0)
+            {
+                dup2(fd_in, STDIN_FILENO);
+                close(fd_in);
+            }
             if (curr->next)
+            {
                 dup2(pipefd[1], STDOUT_FILENO);
-            
-            close(pipefd[0]);
-
+                close(pipefd[0]);
+                close(pipefd[1]);
+            }
             handle_redirections(curr->redir);
-
             if (is_built_in(curr->cmd[0]))
                 ex_built_in(curr, &env);
             else
                 execute_external(curr, env);
-
             exit(EXIT_SUCCESS);
         }
         else if (pid < 0)
-            perror("fork");
-        else
         {
-            waitpid(pid, NULL, 0);
-            close(pipefd[1]);
-            fd_in = pipefd[0];
-            curr = curr->next;
+            perror("fork");
+            free(pids);
+            exit(EXIT_FAILURE);
         }
+
+        if (fd_in != 0)
+            close(fd_in);
+        if (curr->next)
+            close(pipefd[1]);
+
+        fd_in = (curr->next) ? pipefd[0] : 0;
+
+        pids[i++] = pid;
+        curr = curr->next;
     }
+
+        int j = 0;
+        while (j < cmd_count)
+        {
+            waitpid(pids[j], NULL, 0);
+            j++;
+        }
+
 }
 
 void ft_exuction(t_spcmd *list, t_env **env)
