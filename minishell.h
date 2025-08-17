@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "libft/libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -12,6 +14,9 @@
 #include <errno.h>
 
 #define MAX_LINE 1024
+#define REDIR_OUT 1
+#define REDIR_APPEND 2
+#define REDIR_IN 3
 
 typedef enum s_token_type
 {
