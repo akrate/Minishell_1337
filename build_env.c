@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 13:44:39 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/10 13:50:54 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/24 20:18:02 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,70 +30,82 @@ char	*ft_strdup_env(const char *s)
 	return (copy);
 }
 
-t_env *ft_env_new(char *var,char *val)
+t_env	*ft_env_new(char *var, char *val)
 {
-    t_env *new;
+	t_env	*new;
 
-    new = ft_malloc(sizeof(t_env),&(set_get_data(NULL)->lst_gc_env));
-    new->var = ft_strdup_env(var);
-    new->val = ft_strdup_env(val);
-    new->next = NULL;
-    return (new);
-}
-void ft_env_add_back(t_env **head, t_env *new_node)
-{
-    t_env *temp;
-
-    if (!head || !new_node)
-        return;
-
-    if (*head == NULL)
-    {
-        *head = new_node;
-        return;
-    }
-
-    temp = *head;
-    while (temp->next != NULL)
-        temp = temp->next;
-
-    temp->next = new_node;
+	new = ft_malloc(sizeof(t_env), &(set_get_data(NULL)->lst_gc_env));
+	new->var = ft_strdup_env(var);
+	new->val = ft_strdup_env(val);
+	new->next = NULL;
+	return (new);
 }
 
-void srch(char *str, int *i)
+void	ft_env_add_back(t_env **head, t_env *new_node)
 {
-    while (str[*i])
-    {
-        if (str[*i] == '=')
-            break;
-        (*i)++;
-    }
+	t_env	*temp;
+
+	if (!head || !new_node)
+		return ;
+	if (*head == NULL)
+	{
+		*head = new_node;
+		return ;
+	}
+	temp = *head;
+	while (temp->next != NULL)
+		temp = temp->next;
+	temp->next = new_node;
 }
 
-t_env *copy_env(char **str)
+void	srch(char *str, int *i)
 {
-    int i;
-    int j;
-    char *val;
-    char *var;
-    t_env *lst;
+	if (!str)
+	{
+		return ;
+	}
+	while (str[*i])
+	{
+		if (str[*i] == '=')
+			break ;
+		(*i)++;
+	}
+}
 
-    lst = NULL;
-    j = 0;
-    while (str[j])
-    {
-        i = 0;
-        var = NULL;
-        val = NULL;
-        srch(str[j], &i);
-        var = ft_substr(str[j], 0, i + 1);
-        if (str[j][i] == '=')
-            val = ft_substr(str[j], i + 1, ft_strlen(str[j]) - i - 1);
-        else
-            val = ft_strdup("");
-        ft_env_add_back(&lst, ft_env_new(var, val));
-        j++;
-    }
-    ft_env_add_back(&lst, ft_env_new("?=", "0"));
-    return lst;
+void	check_env_null(char **str)
+{
+	if (str == NULL)
+	{
+		printf("error clone env:)\n");
+		exit(2);
+	}
+}
+
+t_env	*copy_env(char **str)
+{
+	int		i;
+	int		j;
+	char	*val;
+	char	*var;
+	t_env	*lst;
+
+	check_env_null(str);
+	lst = NULL;
+	j = 0;
+	while (str[j])
+	{
+		i = 0;
+		var = NULL;
+		val = NULL;
+		srch(str[j], &i);
+		var = ft_substr(str[j], 0, i + 1);
+		if (str[j][i] == '=')
+			val = ft_substr(str[j], i + 1, ft_strlen(str[j]) - i - 1);
+		else
+			val = ft_strdup("");
+		ft_env_add_back(&lst, ft_env_new(var, val));
+		j++;
+	}
+	ft_env_add_back(&lst, ft_env_new("?=", "0"));
+	return (lst);
 }

@@ -6,13 +6,13 @@
 #    By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 14:41:13 by nafarid           #+#    #+#              #
-#    Updated: 2025/08/08 13:03:21 by aoussama         ###   ########.fr        #
+#    Updated: 2025/08/24 20:26:01 by aoussama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-SRC = main.c utils.c pars.c cheking_lexer.c test_function.c check_dolar.c utils1.c expand3.c garbage.c expand4.c heredoc.c build_env.c \
-	exuction.c split_tokens.c export.c getenv.c builtins.c
+SRC = main.c utils.c pars.c cheking_lexer.c check_dolar.c utils1.c expand3.c garbage.c expand4.c heredoc.c build_env.c \
+	exuction.c split_tokens.c export.c getenv.c builtins.c handle_meta_char.c skip_qouts.c
 OBJS = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3

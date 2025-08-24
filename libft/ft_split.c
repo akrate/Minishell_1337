@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 14:13:24 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/30 14:46:07 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/24 20:09:34 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static char	*str_d(const char *s, int start, int finish)
 	char	*result;
 	int		i;
 
-	result = (char *)ft_malloc((finish - start + 1) * sizeof(char), &(set_get_data(NULL)->lst_gc_g));
+	result = (char *)ft_malloc((finish - start + 1) * sizeof(char),
+			&(set_get_data(NULL)->lst_gc_g));
 	if (result == NULL)
 	{
 		return (NULL);
@@ -67,9 +68,8 @@ char	**ft_split(char const *s, char c)
 
 	if (s == NULL)
 		return (NULL);
-	result = (char **)ft_malloc((count_word(s, c) + 1) * sizeof(char *), &(set_get_data(NULL)->lst_gc_g));
-	if (result == NULL)
-		return (NULL);
+	result = (char **)ft_malloc((count_word(s, c) + 1) * sizeof(char *),
+			&(set_get_data(NULL)->lst_gc_g));
 	i = 0;
 	j = 0;
 	while (s[i])
@@ -86,18 +86,3 @@ char	**ft_split(char const *s, char c)
 	}
 	return (result[j] = NULL, result);
 }
-// int main()
-// {
-// 	char p[] = ",h";
-// 	char **o = ft_split(p,',');
-// 	int i = 0;
-// 	if (o == NULL){
-// 		printf("bbbb\n");
-// 		return (0);
-// 	}
-// 	while (o[i])
-// 	{
-// 		printf("%s$\n",o[i]);
-// 		i++;
-// 	}
-// }

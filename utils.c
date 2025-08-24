@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:23:13 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/31 17:47:10 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/24 20:23:06 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,19 @@ t_list	*fill_node(char *content, t_token_type t_type, int rm_qu)
 	return (node);
 }
 
+static void	init_close(int *i, int *d)
+{
+	*i = 0;
+	*d = 0;
+}
+
 int	checking_close_qoutes(char *str)
 {
 	int		i;
 	int		d;
 	char	c;
 
-	i = 0;
-	d = 0;
+	init_close(&i, &d);
 	while (str[i])
 	{
 		if (d == 0 && (str[i] == '\'' || str[i] == '"'))
@@ -86,13 +91,4 @@ int	checking_close_qoutes(char *str)
 			i++;
 	}
 	return (d);
-}
-
-t_list	*ft_lastlist(t_list *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
 }

@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 13:08:36 by aoussama          #+#    #+#             */
-/*   Updated: 2025/08/15 14:16:06 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/24 16:34:06 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,36 +20,45 @@ t_data	*set_get_data(void *p)
 		ptr = p;
 	return (ptr);
 }
-// int check_empty_str(char *str)
-// {
-//     int i;
-//     if (ft_strlen(str) == 0)
-//         return (1);
-// 	i = 0;
-//     while (str[i])
-// 	{
-// 		if (str[i] != ' ')
-// 			return(0);
-// 		i++;
-// 	}
-//     return (1);
-// }
-int	main(int ac,char **av,char **env)
+
+t_env	*set_get_env(t_env *p)
+{
+	static t_env	*ptr;
+
+	if (p)
+		ptr = p;
+	return (ptr);
+}
+
+void	sigint_handler(int signum)
+{
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	check_env("?=", "130", set_get_env(NULL));
+}
+
+int	main(int ac, char **av, char **env)
 {
 	char	*cmd;
 	t_data	data;
-	t_env *lst;
+	t_env	*lst;
+
 	(void)ac;
 	(void)av;
-	
 	lst = NULL;
 	data.lst_gc_env = NULL;
 	data.lst_gc_g = NULL;
 	set_get_data(&data);
 	lst = copy_env(env);
+	set_get_env(lst);
 	free_garbage(&data.lst_gc_g);
 	while (1)
 	{
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		data.lst_gc_g = NULL;
 		set_get_data(&data);
 		cmd = readline("<minishell> ");
@@ -58,9 +67,9 @@ int	main(int ac,char **av,char **env)
 		if (*cmd)
 		{
 			add_history(cmd);
-			paring_cmd(cmd,&lst);
+			paring_cmd(cmd, &lst);
 		}
 		free_garbage(&data.lst_gc_g);
 	}
-	ft_exit(NULL,lst);
+	ft_exit(NULL, lst);
 }

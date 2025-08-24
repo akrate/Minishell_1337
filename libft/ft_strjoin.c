@@ -20,7 +20,8 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	if (!s1)
 		return (NULL);
 	j = ft_strlen(s1) + ft_strlen(s2);
-	reslt = (char *)ft_malloc((j + 1) * sizeof(char),  &(set_get_data(NULL)->lst_gc_g));
+	reslt = (char *)ft_malloc((j + 1) * sizeof(char),
+			&(set_get_data(NULL)->lst_gc_g));
 	if (reslt == NULL)
 		return (NULL);
 	ft_strlcpy(reslt, s1, ft_strlen(s1) + 1);

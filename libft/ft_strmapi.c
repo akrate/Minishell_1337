@@ -22,7 +22,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 		return (NULL);
 	lens = ft_strlen(s);
 	i = 0;
-	res = (char *)ft_malloc((lens + 1) * sizeof(char), &(set_get_data(NULL)->lst_gc_g));
+	res = (char *)ft_malloc((lens + 1) * sizeof(char),
+			&(set_get_data(NULL)->lst_gc_g));
 	if (res == NULL)
 		return (NULL);
 	while (s[i])

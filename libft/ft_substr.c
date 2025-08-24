@@ -19,7 +19,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t			s_len;
 	size_t			lend;
 
-	if (!s)
+	if (!s || len == 0)
 		return (NULL);
 	i = 0;
 	s_len = ft_strlen(s);
@@ -29,7 +29,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		lend = len;
 	else
 		lend = s_len - start;
-	res = (char *)ft_malloc((lend + 1) * sizeof(char), &(set_get_data(NULL)->lst_gc_g));
+	res = (char *)ft_malloc((lend + 1) * sizeof(char),
+			&(set_get_data(NULL)->lst_gc_g));
 	if (res == NULL)
 		return (NULL);
 	while (i < lend)

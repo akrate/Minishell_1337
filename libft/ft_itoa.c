@@ -6,7 +6,7 @@
 /*   By: aoussama <aoussama@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:45:11 by aoussama          #+#    #+#             */
-/*   Updated: 2025/07/30 14:35:15 by aoussama         ###   ########.fr       */
+/*   Updated: 2025/08/24 20:09:04 by aoussama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,8 @@ char	*ft_itoa(int n)
 
 	j = n;
 	len = ft_count(j);
-	reslt = (char *)ft_malloc((len + 1) * sizeof(char), &(set_get_data(NULL)->lst_gc_g));
-	if (!reslt)
-		return (NULL);
+	reslt = (char *)ft_malloc((len + 1) * sizeof(char),
+			&(set_get_data(NULL)->lst_gc_g));
 	reslt[len] = '\0';
 	len--;
 	if (j == 0)
